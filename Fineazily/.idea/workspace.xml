@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc58ce23-9b1d-4405-b29b-68eb8856e737" name="Changes" comment="" />
+    <list default="true" id="fc58ce23-9b1d-4405-b29b-68eb8856e737" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NoCountry/Fineazily/exception/userExceptions/UserNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NoCountry/Fineazily/model/entity/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NoCountry/Fineazily/service/AService.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,12 +19,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Exception" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="2-crear-entitdad-rol" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
@@ -43,9 +53,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "MS-A",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/leonl/Documents/No-Country/S19-07-N/Fineazily",
+    "last_opened_file_path": "C:/Users/leonl/Documents/No-Country/S19-07-N/Back/Fineazily",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -82,7 +92,9 @@
       <workItem from="1732064585989" duration="1286000" />
       <workItem from="1732101891503" duration="711000" />
       <workItem from="1732139583016" duration="1592000" />
-      <workItem from="1732147061045" duration="1605000" />
+      <workItem from="1732147061045" duration="2500000" />
+      <workItem from="1732150154325" duration="831000" />
+      <workItem from="1732151140675" duration="140000" />
     </task>
     <servers />
   </component>
