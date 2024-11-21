@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService service;
+
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserDto dto){
+    public ResponseEntity<?> createUser(@RequestBody @Valid UserDto dto) {
         User user = new User(dto);
         service.create(user);
-
-
+        return ResponseEntity.ok("User created successfully");
     }
 
 }
