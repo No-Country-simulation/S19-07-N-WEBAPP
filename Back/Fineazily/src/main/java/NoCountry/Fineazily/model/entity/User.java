@@ -1,5 +1,6 @@
 package NoCountry.Fineazily.model.entity;
 
+import NoCountry.Fineazily.model.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,10 @@ public class User {
     private Role rol;
 
     private LocalDate creationDate;
+
+    public User(UserDto dto) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.password = dto.password();
+    }
 }
