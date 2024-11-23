@@ -9,13 +9,22 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Role {
+public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    private String image;
 
-    @OneToMany(mappedBy = "rol")
+    private String name;
+
+    private String phone;
+
+    private String address;
+
+    @OneToMany(mappedBy = "branch")
+    private List<Box> boxes;
+
+    @OneToMany(mappedBy = "branch")
     private List<User> users;
 }

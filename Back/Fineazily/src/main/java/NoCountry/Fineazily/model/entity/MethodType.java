@@ -4,35 +4,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+public class MethodType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
-
-    private String email;
-
-    private String password;
-
-    private LocalDate creationDate;
+    private String description;
 
     @ManyToOne
-    private Role rol;
+    private MoveType moveType;
 
-    @ManyToOne
-    private Branch branch;
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "methodType")
     private List<Transaction> transactions;
-
-
-
 }

@@ -5,34 +5,30 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
-    private String email;
+    private String description;
 
-    private String password;
+    private float amount;
 
     private LocalDate creationDate;
 
     @ManyToOne
-    private Role rol;
+    private MethodType methodType;
 
     @ManyToOne
-    private Branch branch;
+    private Box box;
 
-    @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
-
-
+    @ManyToOne
+    private User user;
 
 }
