@@ -22,7 +22,7 @@ public class User {
     private String password;
 
     @ManyToOne
-    private Rol rol;
+    private Role rol;
 
     private LocalDate creationDate;
 }
