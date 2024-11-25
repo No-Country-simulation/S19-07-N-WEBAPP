@@ -9,20 +9,26 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
-    private String email;
+    private String description;
 
-    private String password;
-
-    @ManyToOne
-    private Rol rol;
+    private float amount;
 
     private LocalDate creationDate;
+
+    @ManyToOne
+    private MethodType methodType;
+
+    @ManyToOne
+    private Box box;
+
+    @ManyToOne
+    private User user;
+
 }
