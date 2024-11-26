@@ -12,4 +12,5 @@ public record UserDto(
         String email,
         @Size(min = 8)
         String password) {
+
 }
