@@ -27,9 +27,4 @@ public class User {
 
     private LocalDate creationDate;
 
-    public User(UserDto dto) {
-        this.name = dto.name();
-        this.email = dto.email();
-        this.password = dto.password();
-    }
 }

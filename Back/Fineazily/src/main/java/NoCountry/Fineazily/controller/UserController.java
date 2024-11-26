@@ -2,6 +2,7 @@ package NoCountry.Fineazily.controller;
 
 import NoCountry.Fineazily.model.dto.UserDto;
 import NoCountry.Fineazily.model.entity.User;
+import NoCountry.Fineazily.model.mapper.UserMapper;
 import NoCountry.Fineazily.service.UserService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService service;
+    private final UserMapper userMapper;
 
     @PostMapping("/")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserDto dto) {
-        User user = new User(dto);
-        service.create(user);
+        service.create(userMapper.toEntity(dto));
         return ResponseEntity.ok("User created successfully");
     }
 }

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UserDto(
-        @NotNull
         Long id,
         String name,
         @Email
