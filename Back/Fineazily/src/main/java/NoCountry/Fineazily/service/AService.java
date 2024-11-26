@@ -12,7 +12,7 @@ public abstract class AService<T,D> {
 
     public abstract void update(T entity);
 
-    public abstract void delete(T entity);
+    public abstract void delete(D id);
 
 
 }
