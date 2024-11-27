@@ -26,4 +26,9 @@ public class GlobalAdviceController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<?> transactionNotFoundException(TransactionNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
