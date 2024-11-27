@@ -16,7 +16,7 @@ public class Box {
 
     private String name;
 
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
     private List<Transaction> transactions;
 
     @ManyToOne

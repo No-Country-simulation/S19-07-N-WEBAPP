@@ -15,6 +15,8 @@ import java.util.List;
 public class BranchService extends AService<Branch, Long> {
     private final BranchRepository repository;
     private final String notFound = "There isn't a branch with that id: ";
+    private final BranchMapper branchMapper;
+    private final BranchRepository branchRepository;
 
     @Override
     public void create(Branch entity) {
@@ -39,6 +41,12 @@ public class BranchService extends AService<Branch, Long> {
         } else {
             throw new BranchNotFoundException(notFound + entity.getId());
         }
+    }
+
+    public void update(BranchDTO dto){
+        Branch branch = findById(dto.id());
+        branchMapper.updateBranch(dto, branch);
+        branchRepository.save(branch);
     }
 
     @Override
