@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,8 +21,9 @@ public class TransactionService extends AService<Transaction, Long> {
     private final TransactionRepository repository;
     private final String transactionNotFoundMessage = "There isn't a transaction with that id: ";
     private final TransactionMapper mapper;
-    private final UserService userService;
     private final BoxService boxService;
+    private final MethodTypeService methodTypeService;
+    private final MoveTypeService moveTypeService;
 
 
     @Override
@@ -49,10 +51,10 @@ public class TransactionService extends AService<Transaction, Long> {
         }
     }
 
-    public void update(TransactionDto dto) {
+    public Transaction update(TransactionDto dto) {
         Transaction transaction = findById(dto.id());
         mapper.updateEntity(dto, transaction);
-        repository.save(transaction);
+        return repository.save(transaction);
     }
 
     @Override
@@ -64,15 +66,16 @@ public class TransactionService extends AService<Transaction, Long> {
         }
     }
 
-    public void create( TransactionDto dto, Long userId, Long boxId, Long methodTypeId) {
+    public void create( TransactionDto dto, Long boxId, Long methodTypeId, Long moveTypeId) {
         Box box = boxService.findById(boxId);
-        User user = userService.findById(userId);
-        Transaction transaction = mapper.toEntity(dto);
-        transaction.setUser(user);
-        transaction.setBox(box);
-        transaction.setMethodType();
 
-        repository.save(transaction)
+        Transaction transaction = mapper.toEntity(dto);
+        transaction.setBox(box);
+        transaction.setMethodType(methodTypeService.findById(methodTypeId));
+        transaction.setMoveType(moveTypeService.findById(moveTypeId));
+        transaction.setCreationDate(LocalDate.now());
+
+        repository.save(transaction);
 
     }
 }

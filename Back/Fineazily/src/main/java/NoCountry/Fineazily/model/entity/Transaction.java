@@ -22,14 +22,13 @@ public class Transaction {
 
     private LocalDate creationDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private MethodType methodType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private MoveType moveType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Box box;
-
 
 }

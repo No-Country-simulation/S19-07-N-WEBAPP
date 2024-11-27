@@ -17,13 +17,17 @@ public class BoxService extends AService<Box, Long> {
     private final String notFound = "There isn't a box with that id: ";
     private final BranchService branchService;
     private final BoxMapper boxMapper;
+    private final UserService userService;
 
     @Override
     public void create(Box entity) {
         boxRepository.save(entity);
     }
 
-    public void create(Box entity, Long branchId) {
+    public void create(Box entity, Long branchId, Long  userId) {
+        if(userId != null){
+            entity.setUser(userService.findById(userId));
+        }
         entity.setBranch(
                 branchService.findById(branchId));
         boxRepository.save(entity);
