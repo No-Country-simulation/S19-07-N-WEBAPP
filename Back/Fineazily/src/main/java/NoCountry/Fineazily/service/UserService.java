@@ -33,10 +33,9 @@ public class UserService extends AService<User, Long>{
     }
 
     @Override
-    public void update(User entity) {
-        userRepository.save(
-                findById(entity.getId()));
-    }
+public void update(User entity) {
+    userRepository.save(entity);
+}
 
     @Override
     public void delete(User entity) {
