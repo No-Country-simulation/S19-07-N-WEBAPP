@@ -1,36 +1,34 @@
 package NoCountry.Fineazily.model.entity;
 
-import NoCountry.Fineazily.model.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
-    private String email;
+    private String description;
 
-    private String password;
+    private float amount;
 
     private LocalDate creationDate;
 
     @ManyToOne
-    private Role rol;
-    @ManyToOne
-    private Branch branch;
+    private MethodType methodType;
 
-    @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
+    @ManyToOne
+    private Box box;
+
+    @ManyToOne
+    private User user;
 
 }

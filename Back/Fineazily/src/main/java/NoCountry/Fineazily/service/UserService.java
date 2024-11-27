@@ -11,9 +11,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends AService<User, Long>{
+public class UserService extends AService<User, Long> {
     private final UserRepository userRepository;
-    private final String notFound ="There isn't an user with that id: " ;
+    private final String notFound = "There isn't an user with that id: ";
+
     @Override
     public void create(User entity) {
         entity.setCreationDate(LocalDate.now());
@@ -34,12 +35,16 @@ public class UserService extends AService<User, Long>{
 
     @Override
     public void update(User entity) {
-        userRepository.save(
-                findById(entity.getId()));
+        if (userRepository.existsById(entity.getId())) {
+            userRepository.save(entity);
+        } else {
+            throw new UserNotFoundException(notFound + entity.getId());
+        }
     }
 
     @Override
-    public void delete(User entity) {
-        userRepository.delete(entity);
+    public void delete(Long id) {
+        userRepository.delete(
+                findById(id));
     }
 }
