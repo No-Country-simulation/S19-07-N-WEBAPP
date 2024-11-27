@@ -17,5 +17,5 @@ public class MoveType {
     private String description;
 
     @OneToMany(mappedBy = "moveType")
-    private List<MethodType> methodTypes;
+    private List<Transaction> transactions ;
 }

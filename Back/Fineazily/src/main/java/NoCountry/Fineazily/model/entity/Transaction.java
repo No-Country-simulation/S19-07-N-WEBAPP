@@ -26,9 +26,10 @@ public class Transaction {
     private MethodType methodType;
 
     @ManyToOne
-    private Box box;
+    private MoveType moveType;
 
     @ManyToOne
-    private User user;
+    private Box box;
+
 
 }

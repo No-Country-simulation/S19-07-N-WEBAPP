@@ -15,9 +15,6 @@ public class MethodType {
     private Long id;
     private String description;
 
-    @ManyToOne
-    private MoveType moveType;
-
     @OneToMany(mappedBy = "methodType")
     private List<Transaction> transactions;
 }

@@ -23,8 +23,9 @@ public class Branch {
     private String address;
 
     @OneToMany(mappedBy = "branch")
-    private List<Box> boxes;
+    private List<User> users;
 
     @OneToMany(mappedBy = "branch")
-    private List<User> users;
+    private List<Box> boxes;
+
 }
