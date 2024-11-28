@@ -37,4 +37,9 @@ public class GlobalAdviceController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(MethodTypeNotFoundException.class)
+    public ResponseEntity<?> methodTypeNotFoundException(MethodTypeNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
