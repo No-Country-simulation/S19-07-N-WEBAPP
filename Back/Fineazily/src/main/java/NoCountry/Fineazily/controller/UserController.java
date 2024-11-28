@@ -44,7 +44,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> update(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
-        // Verificar si el usuario existe
         User existingUser = service.findById(id);
         existingUser = userMapper.toEntity(userDto);
         existingUser.setId(id);
@@ -56,11 +55,18 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-    User user = service.findById(id);
-    service.delete(user);
-    ApiResponse<Void> response = new ApiResponse<>(200, "Usuario eliminado con éxito", null);
-    return ResponseEntity.ok(response);
-}
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+        User user = service.findById(id); 
+        if (user != null) { 
+            service.delete(user);  
+            ApiResponse<Void> response = new ApiResponse<>(200, "Usuario eliminado con éxito", null);
+            return ResponseEntity.ok(response);
+        } else {
+            ApiResponse<Void> response = new ApiResponse<>(404, "Usuario no encontrado", null);
+            return ResponseEntity.status(404).body(response);
+        }
+    }
+    
+    
 
 }
