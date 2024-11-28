@@ -23,9 +23,9 @@ public class BoxController {
     private final BoxMapper mapper;
     private final String boxIdNotNullMessage = "The box id cannot be null";
 
-    @PostMapping("/{branchId}/")
-    public ResponseEntity<?> createBox(@PathVariable @NotNull(message = "The branch id cannot be null") Long branchId,
-                                       @Valid @RequestBody BoxDto dto) {
+    @PostMapping("/")
+    public ResponseEntity<?> createBox(@Valid @RequestBody BoxDto dto,
+                                       @NotNull(message = "The branch id cannot be null") @RequestParam Long branchId ) {
         service.create(mapper.toEntity(dto), branchId);
         return ResponseEntity.ok("box created");
     }
@@ -35,7 +35,7 @@ public class BoxController {
         return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<?> getAllBoxes() {
         List<Box> boxes = service.findAll();
         if (boxes != null && !boxes.isEmpty()) {

@@ -31,9 +31,7 @@ public class User {
     @ManyToOne
     private Branch branch;
 
-
     @OneToMany(mappedBy = "user")
     private List<Transaction> transaction;
-
 
 }

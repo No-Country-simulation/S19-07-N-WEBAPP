@@ -4,12 +4,12 @@ import NoCountry.Fineazily.exception.TransactionNotFoundException;
 import NoCountry.Fineazily.model.dto.TransactionDto;
 import NoCountry.Fineazily.model.entity.Box;
 import NoCountry.Fineazily.model.entity.Transaction;
-import NoCountry.Fineazily.model.entity.User;
 import NoCountry.Fineazily.model.mapper.TransactionMapper;
 import NoCountry.Fineazily.repostory.TransactionRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +24,7 @@ public class TransactionService extends AService<Transaction, Long> {
     private final BoxService boxService;
     private final MethodTypeService methodTypeService;
     private final MoveTypeService moveTypeService;
+    private final UserService userService;
 
 
     @Override
@@ -66,11 +67,12 @@ public class TransactionService extends AService<Transaction, Long> {
         }
     }
 
-    public void create( TransactionDto dto, Long boxId, Long methodTypeId, Long moveTypeId) {
-        Box box = boxService.findById(boxId);
+    public void create( TransactionDto dto, Long boxId,Long userId, Long methodTypeId, Long moveTypeId) {
+
 
         Transaction transaction = mapper.toEntity(dto);
-        transaction.setBox(box);
+        transaction.setBox(boxService.findById(boxId));
+        transaction.setUser(userService.findById(userId));
         transaction.setMethodType(methodTypeService.findById(methodTypeId));
         transaction.setMoveType(moveTypeService.findById(moveTypeId));
         transaction.setCreationDate(LocalDate.now());

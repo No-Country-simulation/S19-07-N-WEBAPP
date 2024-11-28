@@ -25,9 +25,10 @@ public class TransactionController {
     @PostMapping("/")
     public ResponseEntity<?> createTransaction(@Valid TransactionDto dto,
                                                @RequestParam @NotNull(message = "box id cannot be null") Long boxId,
+                                               @RequestParam @NotNull(message = "user id cannot be null") Long userId,
                                                @RequestParam @NotNull(message = "method type cannot be null") Long methodTypeId,
                                                @RequestParam @NotNull(message = "move type id cannot be null") Long moveTypeId) {
-        transactionService.create(dto, boxId, methodTypeId, moveTypeId);
+        transactionService.create(dto, boxId, userId, methodTypeId, moveTypeId);
         return ResponseEntity.ok("transaction created");
     }
 
@@ -46,21 +47,20 @@ public class TransactionController {
     }
 
     @PatchMapping("/")
-    public ResponseEntity<?> updateTransaction(@Valid @RequestBody TransactionDto dto){
+    public ResponseEntity<?> updateTransaction(@Valid @RequestBody TransactionDto dto) {
         return ResponseEntity.ok(transactionService.update(dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable @NotNull Long id){
+    public ResponseEntity<?> deleteTransaction(@PathVariable @NotNull Long id) {
         transactionService.delete(id);
         return ResponseEntity.ok("transaction deleted");
     }
 
 
-
     //needs to be implemented
     @GetMapping("/paged")
-    public ResponseEntity<?> getTransactionsPaged(){
+    public ResponseEntity<?> getTransactionsPaged() {
         return ResponseEntity.ok("");
     }
 
