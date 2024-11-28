@@ -21,7 +21,7 @@ public class UserController {
         User user = new User(dto);
         service.create(user);
 
-
+        return ResponseEntity.ok("User created successfully");
     }
 
 }
