@@ -1,5 +1,5 @@
-import Dash from "./(features)/dash/page";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <Dash />;
+  return redirect("/dash");
 }
