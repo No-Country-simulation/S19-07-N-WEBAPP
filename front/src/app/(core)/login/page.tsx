@@ -4,7 +4,6 @@ import { useState, useId, useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -242,7 +241,7 @@ return (
                             <h4 className="text-3xl font-semibold mb-3">Versión Antigua de Fineasy</h4>
                             <p className="text-sm mb-5">El mejor software de gestión desde entonces.</p>
                             <Input
-                                {...register("newUser")}
+                                //{...register("newUser")}
                                 label="Nombre de Usuario"
                                 type="text"
                                 id={id + "-" + "newUser"}
@@ -252,7 +251,7 @@ return (
                                 className="w-full mb-4"
                             />
                             <Input
-                                {...register("newPassword")}
+                               // {...register("newPassword")}
                                 label="Contraseña"
                                 type="password"
                                 id={id + "-" + "newPassword"}
