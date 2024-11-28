@@ -26,4 +26,9 @@ public class GlobalAdviceController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MoveTypeNotFoundException.class)
+    public ResponseEntity<?> moveTypeNotFoundException(MoveTypeNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
