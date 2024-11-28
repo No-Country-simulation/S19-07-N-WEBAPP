@@ -23,11 +23,10 @@ public class BoxController {
     private final BoxMapper mapper;
     private final String boxIdNotNullMessage = "The box id cannot be null";
 
-    @PostMapping("/{branchId}/{userId}")
+    @PostMapping("/{branchId}/")
     public ResponseEntity<?> createBox(@PathVariable @NotNull(message = "The branch id cannot be null") Long branchId,
-                                       @PathVariable Long userId,
                                        @Valid @RequestBody BoxDto dto) {
-        service.create(mapper.toEntity(dto), branchId, userId);
+        service.create(mapper.toEntity(dto), branchId);
         return ResponseEntity.ok("box created");
     }
 

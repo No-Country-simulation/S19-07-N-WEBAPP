@@ -31,4 +31,7 @@ public class Transaction {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Box box;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User user;
+
 }

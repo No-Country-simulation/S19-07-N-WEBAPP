@@ -30,8 +30,10 @@ public class User {
 
     @ManyToOne
     private Branch branch;
-    @OneToOne(mappedBy = "user")
-    private Box box;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transaction;
 
 
 }

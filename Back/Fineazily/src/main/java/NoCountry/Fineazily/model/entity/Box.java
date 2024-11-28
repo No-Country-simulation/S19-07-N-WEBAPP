@@ -19,9 +19,6 @@ public class Box {
     @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
     private List<Transaction> transactions;
 
-    @OneToOne
-    private User user;
-
     @ManyToOne
     private Branch branch;
 

@@ -45,7 +45,7 @@ public class BranchService extends AService<Branch, Long> {
 
     public void update(BranchDTO dto){
         Branch branch = findById(dto.id());
-        branchMapper.updateBranch(dto, branch);
+        branchMapper.updateEntity(dto, branch);
         branchRepository.save(branch);
     }
 
