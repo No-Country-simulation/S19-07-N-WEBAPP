@@ -3,19 +3,19 @@ package NoCountry.Fineazily.model.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.mapping.Set;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Role {
+public class MoveType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String description;
 
-    @OneToMany(mappedBy = "rol")
-    private List<User> users;
+    @OneToMany(mappedBy = "moveType")
+    private List<MethodType> methodTypes;
 }

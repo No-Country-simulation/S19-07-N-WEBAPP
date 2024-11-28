@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,9 +23,19 @@ public class User {
 
     private String password;
 
+
+
     @ManyToOne
     private Role rol;
 
+
     private LocalDate creationDate;
+
+    @ManyToOne
+    private Branch branch;
+
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
+
 
 }

@@ -54,11 +54,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         User user = service.findById(id); 
         if (user != null) { 
-            service.delete(user);  
+            service.delete(id);  // Aquí pasas el ID en lugar del objeto User
             ApiResponse<Void> response = new ApiResponse<>(200, "Usuario eliminado con éxito", null);
             return ResponseEntity.ok(response);
         } else {
@@ -66,6 +67,7 @@ public class UserController {
             return ResponseEntity.status(404).body(response);
         }
     }
+
     
     
 

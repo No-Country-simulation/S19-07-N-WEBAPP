@@ -9,13 +9,16 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Role {
+public class Box {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    private String name;
 
-    @OneToMany(mappedBy = "rol")
-    private List<User> users;
+    @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
+    private List<Transaction> transactions;
+
+    @ManyToOne
+    private Branch branch;
 }
