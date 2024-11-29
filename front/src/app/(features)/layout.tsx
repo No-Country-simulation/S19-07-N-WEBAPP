@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import { Sidebar } from "@/components/sidebar";
 
 export default function FeatureLayout({
   children,
@@ -6,9 +6,11 @@ export default function FeatureLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Navbar />
-      {children}
-    </>
+    <div className="flex min-h-screen">
+      <Sidebar className="w-64" />
+      <div className="flex-1">
+        {children}
+      </div>
+    </div>
   );
 }
