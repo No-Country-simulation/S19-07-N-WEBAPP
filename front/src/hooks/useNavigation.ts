@@ -7,8 +7,9 @@ const useNavigation = () => {
 
   const goHome = () => nav.push("/dash");
   const goBack = () => nav.back();
+  const goLogin = () => nav.push("/login");
 
-  return { goHome, goBack };
+  return { goHome, goBack, goLogin };
 };
 
 export default useNavigation;
