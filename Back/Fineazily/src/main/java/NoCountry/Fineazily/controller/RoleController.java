@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class RoleController {
     @PostMapping()
     public ResponseEntity<?> createRole(@RequestBody @Valid RoleReq roleReq) {
         roleService.create(roleReq);
-        return ResponseEntity.ok().body(new ApiResponse<>(true,"Role created successfully", null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true,"Role created successfully", null));
     }
 
     @Operation(summary = "Get role by ID", description = "Retrieves a role by its unique identifier.")
