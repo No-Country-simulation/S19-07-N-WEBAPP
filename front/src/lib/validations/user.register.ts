@@ -8,14 +8,6 @@ export const UserSchema = z
       .min(1, { message: "Ingrese nombre" })
       .min(5, { message: "Nombre muy corto" })
       .regex(/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/, { message: "Solo letras" }),
-    username: z
-      .string()
-      .trim()
-      .min(1, { message: "Ingrese Usuario" })
-      .min(5, {
-        message: "Usuario muy corto",
-      })
-      .regex(/^[a-zA-Z0-9_]+$/, { message: "nombre de usuario no valido" }),
     email: z
       .string()
       .min(1, { message: "Ingrese correo" })
@@ -37,14 +29,6 @@ export const UserSchema = z
       }),
 
     confirmPassword: z.string().trim().min(1, { message: "Repita la clave" }),
-    address: z.string().trim().min(1, { message: "Ingrese direccion" }),
-    phone: z
-      .string()
-      .trim()
-      .min(1, { message: "Ingrese telefono" })
-      .regex(/^\d+$/, {
-        message: "Solo números",
-      }),
   })
   .refine((data) => data.confirmPassword === data.password, {
     message: "Las claves no coinciden",

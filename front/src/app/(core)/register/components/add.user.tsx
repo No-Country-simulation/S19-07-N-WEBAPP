@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { registerUser } from "@/lib/actions/formAction";
 import {
   Form,
   FormControl,
@@ -12,85 +13,42 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { UserSchema, UserType } from "@/lib/validations/user.register";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ComponentType } from "react";
+import { ComponentType, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { AuthFields, BasicField } from "../utils/formFields";
+import useNavigation from "@/hooks/useNavigation";
 
 const AddUser: ComponentType = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { goLogin } = useNavigation();
   const userForm = useForm<UserType>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
-      address: "",
       email: "",
       name: "",
       password: "",
       confirmPassword: "",
-      phone: "",
-      username: "",
     },
   });
   const {
     formState: { errors },
   } = userForm;
   const onSubmit = (data: UserType) => {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject();
-        }, 3000);
-      }),
-      {
-        loading: "Cargando...",
-        success: "Usuario registrado con éxito",
-        error: "Conexion con API proximamente",
-      }
-    );
-    console.log(data);
+    setIsLoading(true);
+    toast.promise(registerUser(data), {
+      loading: "Cargando...",
+      success: (res: any) => {
+        goLogin();
+        return res;
+      },
+      error: (err) => err,
+      finally: () => {
+        setIsLoading(false);
+      },
+    });
   };
-  interface FormFieldType {
-    name: keyof UserType;
-    text: string;
-    placeholder: string;
-  }
-  const BasicField: FormFieldType[] = [
-    {
-      name: "name",
-      text: "Nombre",
-      placeholder: "Jhon Doeh",
-    },
-    {
-      name: "username",
-      text: "Usuario",
-      placeholder: "doeh69",
-    },
-    {
-      name: "address",
-      text: "Dirección",
-      placeholder: "Calle 123",
-    },
-    {
-      name: "phone",
-      text: "Teléfono",
-      placeholder: "1234567890",
-    },
-  ];
-  const AuthFields: FormFieldType[] = [
-    {
-      name: "email",
-      text: "Correo Electrónico",
-      placeholder: "jhondoe69@gmail.com",
-    },
-    {
-      name: "password",
-      text: "Clave",
-      placeholder: "********",
-    },
-    {
-      name: "confirmPassword",
-      text: "Confirmar Clave",
-      placeholder: "********",
-    },
-  ];
+
   return (
     <Form {...userForm}>
       <form
@@ -111,23 +69,12 @@ const AddUser: ComponentType = () => {
                   <FormMessage className="text-[10px] leading-3" />
                 </div>
                 <FormControl>
-                  {ff.name === "password" ? (
-                    <PasswordInput
-                      className={
-                        errors[ff.name] && "focus-visible:ring-rose-500"
-                      }
-                      placeholder={ff.placeholder}
-                      {...field}
-                    />
-                  ) : (
-                    <Input
-                      className={
-                        errors[ff.name] && "focus-visible:ring-rose-500"
-                      }
-                      placeholder={ff.placeholder}
-                      {...field}
-                    />
-                  )}
+                  <Input
+                    disabled={isLoading}
+                    className={errors[ff.name] && "focus-visible:ring-rose-500"}
+                    placeholder={ff.placeholder}
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -148,6 +95,7 @@ const AddUser: ComponentType = () => {
                 <FormControl>
                   {af.name === "password" || af.name === "confirmPassword" ? (
                     <PasswordInput
+                      disabled={isLoading}
                       className={
                         errors[af.name] && "focus-visible:ring-rose-500"
                       }
@@ -156,6 +104,7 @@ const AddUser: ComponentType = () => {
                     />
                   ) : (
                     <Input
+                      disabled={isLoading}
                       className={
                         errors[af.name] && "focus-visible:ring-rose-500"
                       }
@@ -168,11 +117,32 @@ const AddUser: ComponentType = () => {
             )}
           />
         ))}
-        <Button className="mt-5" type="submit">
-          Registrar
-        </Button>
+        <SubmitButton isLoading={isLoading} field="Registrar" />
       </form>
     </Form>
+  );
+};
+
+const SubmitButton: FC<{ isLoading: boolean; field: string }> = ({
+  isLoading,
+  field,
+}) => {
+  return (
+    <Button
+      disabled={isLoading}
+      className="mt-5"
+      type={isLoading ? "button" : "submit"}
+    >
+      {isLoading ? (
+        <span
+          className="icon-[line-md--loading-twotone-loop]"
+          role="img"
+          aria-hidden="true"
+        />
+      ) : (
+        field
+      )}
+    </Button>
   );
 };
 
