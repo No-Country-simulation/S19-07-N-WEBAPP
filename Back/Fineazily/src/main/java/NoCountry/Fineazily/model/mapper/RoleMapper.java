@@ -14,7 +14,7 @@ public interface RoleMapper {
     Role toEntity(RoleReq roleReq);
 
     @Mapping(source= "displayName", target = "name")
-    RoleRes toRoleRes(Role role);
+    RoleRes toDto(Role role);
 
     @Mapping(target = "name", expression = "java(roleReq.name().toUpperCase())")
     void updateRole(RoleReq roleReq, @MappingTarget Role role);
