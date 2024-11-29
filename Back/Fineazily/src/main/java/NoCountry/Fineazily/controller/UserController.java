@@ -5,6 +5,8 @@ import NoCountry.Fineazily.model.dto.UserDto;
 import NoCountry.Fineazily.model.entity.User;
 import NoCountry.Fineazily.model.mapper.UserMapper;
 import NoCountry.Fineazily.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name="User")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -21,6 +24,7 @@ public class UserController {
     private final UserService service;
     private final UserMapper userMapper;
 
+    @Operation(summary = "Create a new user", description = "Creates a new user using the provided UserDto")
     @PostMapping
     public ResponseEntity<ApiResponse<UserDto>> create(@RequestBody @Valid UserDto userDto) {
         service.create(userMapper.toEntity(userDto));
@@ -28,6 +32,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(summary = "Get all users", description = "Fetches a list of all users")
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserDto>>> findAll() {
         List<UserDto> users = userMapper.toDtoList(service.findAll());
@@ -35,6 +40,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Get user by ID", description = "Fetches a user based on the provided ID")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> findById(@PathVariable Long id) {
         User user = service.findById(id);
@@ -42,6 +48,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Update user by ID", description = "Updates the information of a user using the provided ID and UserDto")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserDto>> update(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
         User existingUser = service.findById(id);
@@ -54,7 +61,8 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    
+
+    @Operation(summary = "Delete user by ID", description = "Deletes a user based on the provided ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         User user = service.findById(id); 
