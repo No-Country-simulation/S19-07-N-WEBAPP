@@ -4,7 +4,7 @@ import { DashboardCharts } from "@/components/dashboard-charts";
 
 export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex">
       <div className="flex-1">
         <main className="p-8 space-y-8">
           <div className="grid gap-4 md:grid-cols-3">

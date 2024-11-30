@@ -40,7 +40,7 @@ const AddUser: ComponentType = () => {
       loading: "Cargando...",
       success: (res: any) => {
         goLogin();
-        return res;
+        return res.data.message;
       },
       error: (err) => err,
       finally: () => {
@@ -48,7 +48,6 @@ const AddUser: ComponentType = () => {
       },
     });
   };
-
   return (
     <Form {...userForm}>
       <form
