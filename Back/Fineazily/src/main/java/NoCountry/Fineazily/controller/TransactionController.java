@@ -23,7 +23,8 @@ public class TransactionController {
                                                @RequestParam @NotNull(message = "box id cannot be null") Long boxId,
                                                @RequestParam @NotNull(message = "methodType id cannot be null") Long methodTypeId,
                                                @RequestParam @NotNull(message = "moveType id cannot be null") Long moveTypeId){
-        
-        return ResponseEntity.ok("");
+        transactionService.createTransaction(dto, userId, boxId, methodTypeId, moveTypeId);
+
+        return ResponseEntity.ok("Transaction registered");
     }
 }
