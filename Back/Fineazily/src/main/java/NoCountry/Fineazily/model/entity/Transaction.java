@@ -1,5 +1,6 @@
 package NoCountry.Fineazily.model.entity;
 
+import NoCountry.Fineazily.model.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,5 +31,8 @@ public class Transaction {
 
     @ManyToOne
     private User user;
+
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType type;
 
 }
