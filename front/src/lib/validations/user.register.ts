@@ -26,6 +26,9 @@ export const UserSchema = z
       .regex(/^(?=.*\d)/, { message: "Debe contener al menos un número" })
       .regex(/^[A-Za-z\d]+$/, {
         message: "Clave solo Alfanumerica",
+      })
+      .regex(/^(?=.*[!@#$%^&*(),.?":{}|<>])/, {
+        message: "Debe contener al menos un caracter",
       }),
 
     confirmPassword: z.string().trim().min(1, { message: "Repita la clave" }),
