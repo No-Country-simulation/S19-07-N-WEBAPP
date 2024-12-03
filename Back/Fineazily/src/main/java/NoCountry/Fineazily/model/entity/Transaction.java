@@ -27,6 +27,9 @@ public class Transaction {
     private MethodType methodType;
 
     @ManyToOne
+    private MoveType moveType;
+
+    @ManyToOne
     private Box box;
 
     @ManyToOne
