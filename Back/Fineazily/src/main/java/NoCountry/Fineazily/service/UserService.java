@@ -34,9 +34,6 @@ public class UserService extends AService<User, Long> {
     }
 
     @Override
-
-
-
     public void update(User entity) {
         if (userRepository.existsById(entity.getId())) {
             userRepository.save(entity);

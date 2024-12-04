@@ -74,6 +74,21 @@ public class TransactionService extends AService<Transaction, Long> {
         create(t);
     }
 
+    public List<Transaction> getTransactionsByUser(Long userId){
+        return transactionRepository.findTransactionsByUser(
+                userService.findById(userId));
+    }
+
+    public List<Transaction> getTransactionsByBox(Long boxId){
+        return transactionRepository.findTransactionsByBox(
+                boxService.findById(boxId));
+    }
+
+    public List<Transaction> getTransactionsByBranch(Long branchId){
+        return transactionRepository.findTransactionsByBranchId(branchId);
+    }
+
+
     private void validateTransactionMethodType(MethodType method, MoveType move) {
         Set<MethodType> validMethods = validMethodsByMove.get(move);
         if (validMethods == null || !validMethods.contains(method)) {

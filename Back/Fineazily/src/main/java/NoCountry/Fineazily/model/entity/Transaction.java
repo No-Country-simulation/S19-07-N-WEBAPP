@@ -30,9 +30,9 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Box box;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 }
