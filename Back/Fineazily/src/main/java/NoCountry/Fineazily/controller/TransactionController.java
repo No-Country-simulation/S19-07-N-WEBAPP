@@ -4,7 +4,6 @@ import NoCountry.Fineazily.model.dto.TransactionDto;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.service.TransactionService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,17 +36,17 @@ public class TransactionController {
 //-------------------------filtered search-----------------
     @GetMapping("{userId}")
     public ResponseEntity<?> findTransactionsByUser(@PathVariable Long userId) {
-        return getResponse(transactionService.findTransactionsByUser(userId));
+        return getResponse(transactionService.findTransactionsByUserId(userId));
     }
 
     @GetMapping("{boxId}")
     public ResponseEntity<?> findTransactionsByBox(@PathVariable Long boxId) {
-        return getResponse(transactionService.findTransactionsByBox(boxId));
+        return getResponse(transactionService.findTransactionsByBoxId(boxId));
     }
 
     @GetMapping("{branchId}")
     public ResponseEntity<?> findTransactionsByBranch(@PathVariable Long branchId) {
-        return getResponse(transactionService.findTransactionsByBranch(branchId));
+        return getResponse(transactionService.findTransactionsByBranchId(branchId));
     }
 
     @GetMapping("{transactionId}")

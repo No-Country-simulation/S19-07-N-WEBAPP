@@ -80,21 +80,18 @@ public class TransactionService extends AService<Transaction, Long> {
         update(t);
     }
 
-
-
-
     //filtered searching
-    public List<Transaction> findTransactionsByUser(Long userId) {
+    public List<Transaction> findTransactionsByUserId(Long userId) {
         return transactionRepository.findTransactionsByUser(
                 userService.findById(userId));
     }
 
-    public List<Transaction> findTransactionsByBox(Long boxId) {
+    public List<Transaction> findTransactionsByBoxId(Long boxId) {
         return transactionRepository.findTransactionsByBox(
                 boxService.findById(boxId));
     }
 
-    public List<Transaction> findTransactionsByBranch(Long branchId) {
+    public List<Transaction> findTransactionsByBranchId(Long branchId) {
         return transactionRepository.findTransactionsByBranchId(branchId);
     }
 
