@@ -80,7 +80,7 @@ public class TransactionService extends AService<Transaction, Long> {
         update(t);
     }
 
-    //filtered searching
+    //----------------------------filtered searching----------------------
     public List<Transaction> findTransactionsByUserId(Long userId) {
         return transactionRepository.findTransactionsByUser(
                 userService.findById(userId));
@@ -95,7 +95,16 @@ public class TransactionService extends AService<Transaction, Long> {
         return transactionRepository.findTransactionsByBranchId(branchId);
     }
 
-    //validate method for moveType according methodType
+    public List<Transaction> findTransactionsByMethodType(MethodType methodType){
+        return transactionRepository.findTransactionsByMethodType(methodType);
+    }
+
+    public List<Transaction> findTransactionsByMoveType(MoveType moveType){
+        return transactionRepository.findTransactionsByMoveType(moveType);
+    }
+    //-------------------------------------------------------------------
+
+    //-validate method for moveType according methodType
     private void validateTransactionMethodType(MethodType method, MoveType move) {
         Set<MethodType> validMethods = validMethodsByMove.get(move);
         if (validMethods == null || !validMethods.contains(method)) {

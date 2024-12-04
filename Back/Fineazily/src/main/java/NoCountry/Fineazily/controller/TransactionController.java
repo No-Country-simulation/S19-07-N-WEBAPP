@@ -2,6 +2,8 @@ package NoCountry.Fineazily.controller;
 
 import NoCountry.Fineazily.model.dto.TransactionDto;
 import NoCountry.Fineazily.model.entity.Transaction;
+import NoCountry.Fineazily.model.enums.MethodType;
+import NoCountry.Fineazily.model.enums.MoveType;
 import NoCountry.Fineazily.service.TransactionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/transaction/")
+@RequestMapping("/api/transactions/")
 @RequiredArgsConstructor
 @Validated
 public class TransactionController {
@@ -28,23 +30,26 @@ public class TransactionController {
 
         return ResponseEntity.ok("Transaction registered");
     }
-
+    //-------------------------filtered search-----------------------------------------------------------
     @GetMapping
-    public ResponseEntity<?> findAllTransactions() {
+    public ResponseEntity<?> findAllTransactions(@RequestParam(required = false)MethodType method) {
+        if(method != null){
+            return getResponse(transactionService.findTransactionsByMethodType(method));
+        }
         return getResponse(transactionService.findAll());
     }
-//-------------------------filtered search-----------------
-    @GetMapping("{userId}")
+
+    @GetMapping("user/{userId}")
     public ResponseEntity<?> findTransactionsByUser(@PathVariable Long userId) {
         return getResponse(transactionService.findTransactionsByUserId(userId));
     }
 
-    @GetMapping("{boxId}")
+    @GetMapping("box/{boxId}")
     public ResponseEntity<?> findTransactionsByBox(@PathVariable Long boxId) {
         return getResponse(transactionService.findTransactionsByBoxId(boxId));
     }
 
-    @GetMapping("{branchId}")
+    @GetMapping("branch/{branchId}")
     public ResponseEntity<?> findTransactionsByBranch(@PathVariable Long branchId) {
         return getResponse(transactionService.findTransactionsByBranchId(branchId));
     }
@@ -54,6 +59,17 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.findById(transactionId));
     }
 
+    @GetMapping("income")
+    public ResponseEntity<?> getIncomeTransactions(){
+        return getResponse(transactionService.findTransactionsByMoveType(MoveType.INCOME));
+    }
+
+    @GetMapping("egress")
+    public ResponseEntity<?> getEgressTransactions(){
+        return getResponse(transactionService.findTransactionsByMoveType(MoveType.EGRESS));
+    }
+
+//-------------------------------------------------------------------------------------------------
     @PatchMapping
     public ResponseEntity<?> updateTransaction(@RequestBody TransactionDto dto){
         transactionService.updateTransaction(dto);
