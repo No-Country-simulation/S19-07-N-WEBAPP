@@ -10,8 +10,8 @@ const Logo: ComponentType<Props> = ({ theme, size }) => {
   const sizes = {
     sm: "w-10",
     base: "w-16",
-    lg: "w-28",
-    xl: "w-40",
+    lg: "w-24 lg:w-28",
+    xl: "w-36 lg:w-40",
   };
   return (
     <svg
