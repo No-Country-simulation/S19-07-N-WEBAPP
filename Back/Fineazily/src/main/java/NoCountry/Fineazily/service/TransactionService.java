@@ -74,21 +74,31 @@ public class TransactionService extends AService<Transaction, Long> {
         create(t);
     }
 
-    public List<Transaction> getTransactionsByUser(Long userId){
+    public void updateTransaction(TransactionDto dto){
+        Transaction t = findById(dto.id());
+        mapper.updateExistent(dto, t);
+        update(t);
+    }
+
+
+
+
+    //filtered searching
+    public List<Transaction> findTransactionsByUser(Long userId) {
         return transactionRepository.findTransactionsByUser(
                 userService.findById(userId));
     }
 
-    public List<Transaction> getTransactionsByBox(Long boxId){
+    public List<Transaction> findTransactionsByBox(Long boxId) {
         return transactionRepository.findTransactionsByBox(
                 boxService.findById(boxId));
     }
 
-    public List<Transaction> getTransactionsByBranch(Long branchId){
+    public List<Transaction> findTransactionsByBranch(Long branchId) {
         return transactionRepository.findTransactionsByBranchId(branchId);
     }
 
-
+    //validate method for moveType according methodType
     private void validateTransactionMethodType(MethodType method, MoveType move) {
         Set<MethodType> validMethods = validMethodsByMove.get(move);
         if (validMethods == null || !validMethods.contains(method)) {
