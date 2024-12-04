@@ -1,5 +1,7 @@
 package NoCountry.Fineazily.model.entity;
 
+import NoCountry.Fineazily.model.enums.MethodType;
+import NoCountry.Fineazily.model.enums.MoveType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +24,10 @@ public class Transaction {
 
     private LocalDate creationDate;
 
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
     private MethodType methodType;
 
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
     @ManyToOne

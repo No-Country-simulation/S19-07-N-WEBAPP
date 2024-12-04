@@ -1,4 +1,4 @@
-package NoCountry.Fineazily.exception;
+package NoCountry.Fineazily.exception.transactionExceptions;
 
 public class TransactionNotFoundException extends RuntimeException {
     public TransactionNotFoundException(String message) {

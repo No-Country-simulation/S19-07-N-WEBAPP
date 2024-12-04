@@ -1,26 +1,35 @@
 package NoCountry.Fineazily.service;
 
 
-import NoCountry.Fineazily.exception.TransactionNotFoundException;
+import NoCountry.Fineazily.exception.transactionExceptions.IllegalMethodTypeException;
+import NoCountry.Fineazily.exception.transactionExceptions.TransactionNotFoundException;
 import NoCountry.Fineazily.model.dto.TransactionDto;
 import NoCountry.Fineazily.model.entity.Transaction;
+import NoCountry.Fineazily.model.enums.MethodType;
+import NoCountry.Fineazily.model.enums.MoveType;
 import NoCountry.Fineazily.model.mapper.TransactionMapper;
 import NoCountry.Fineazily.repostory.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
-public class TransactionService extends AService<Transaction,Long>{
+public class TransactionService extends AService<Transaction, Long> {
     private final String transactionNotFound = "There isn't a transaction with that id:";
     private final TransactionRepository transactionRepository;
     private final TransactionMapper mapper;
     private final UserService userService;
     private final BoxService boxService;
-    private final MethodTypeService methodTypeService;
-    private final MoveTypeService moveTypeService;
+    private static final Map<MoveType, Set<MethodType>> validMethodsByMove = new HashMap<>();
+
+    //this block will run once when the class load in memory, makes easier and legible initialize
+    //validMethods map
+    static {
+        validMethodsByMove.put(MoveType.INCOME, EnumSet.of(MethodType.CARD, MethodType.CASH, MethodType.TRANSFER));
+        validMethodsByMove.put(MoveType.EGRESS, EnumSet.of(MethodType.DIRECT, MethodType.FISCAL, MethodType.LOAN));
+    }
 
     @Override
     public void create(Transaction entity) {
@@ -41,29 +50,38 @@ public class TransactionService extends AService<Transaction,Long>{
     @Override
     public void update(Transaction entity) {
         Long transactionId = entity.getId();
-        if(transactionRepository.existsById(transactionId)){
+        if (transactionRepository.existsById(transactionId)) {
             transactionRepository.save(entity);
-        }else {
+        } else {
             throw new TransactionNotFoundException(transactionNotFound + transactionId);
         }
     }
 
     @Override
     public void delete(Long id) {
-        if(transactionRepository.existsById(id)){
+        if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);
-        }else {
+        } else {
             throw new TransactionNotFoundException(transactionNotFound + id);
         }
     }
 
-    public void createTransaction(TransactionDto dto, Long userId, Long boxId, Long methodTypeId, Long moveTypeId){
+    public void createTransaction(TransactionDto dto, Long userId, Long boxId) {
         Transaction t = mapper.toEntity(dto);
+        validateTransactionMethodType(t.getMethodType(), t.getMoveType());
         t.setUser(userService.findById(userId));
         t.setBox(boxService.findById(boxId));
-        t.setMoveType(moveTypeService.findById(moveTypeId));
-        //doing here validations with move type and methodType
-        t.setMethodType(methodTypeService.findById(methodTypeId));
         create(t);
+    }
+
+    private void validateTransactionMethodType(MethodType method, MoveType move) {
+        Set<MethodType> validMethods = validMethodsByMove.get(move);
+        if (validMethods == null || !validMethods.contains(method)) {
+            throw new IllegalMethodTypeException(
+                    validMethods == null ?
+                            "there isn't any method type for that kind of movement: " + move :
+                            "The current method type is invalid for the move: " + move
+            );
+        }
     }
 }

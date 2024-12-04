@@ -20,10 +20,8 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionDto dto,
                                                @RequestParam @NotNull(message = "user id cannot be null") Long userId,
-                                               @RequestParam @NotNull(message = "box id cannot be null") Long boxId,
-                                               @RequestParam @NotNull(message = "methodType id cannot be null") Long methodTypeId,
-                                               @RequestParam @NotNull(message = "moveType id cannot be null") Long moveTypeId){
-        transactionService.createTransaction(dto, userId, boxId, methodTypeId, moveTypeId);
+                                               @RequestParam @NotNull(message = "box id cannot be null") Long boxId){
+        transactionService.createTransaction(dto, userId, boxId);
 
         return ResponseEntity.ok("Transaction registered");
     }
