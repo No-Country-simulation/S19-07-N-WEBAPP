@@ -97,9 +97,5 @@ public class GlobalAdviceController {
         return new ResponseEntity<>(errorResponse, errorResponse.status());
     }
 
-    @ExceptionHandler(MoveTypeNotFoundException.class)
-    public ResponseEntity<?> moveTypeNotFoundException(MoveTypeNotFoundException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
 
 }
