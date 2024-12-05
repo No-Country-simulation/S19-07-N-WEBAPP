@@ -23,8 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <div className="flex">
+        <div className="flex min-h-screen overflow-hidden">
           <div className="flex-1">
+            <HeaderNavbar /> {/* Navbar en la parte superior */}
             <main>{children}</main> {/* Contenido principal */}
           </div>
         </div>
