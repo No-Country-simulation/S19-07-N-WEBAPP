@@ -1,6 +1,7 @@
 package NoCountry.Fineazily.model.entity;
 
 import NoCountry.Fineazily.model.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,11 +24,13 @@ public class User {
 
     private String password;
 
+    @JsonIgnore
     @ManyToOne
     private Role rol;
 
     private LocalDate creationDate;
 
+    @JsonIgnore
     @ManyToOne
     private Branch branch;
 

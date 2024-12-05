@@ -2,6 +2,7 @@ package NoCountry.Fineazily.model.entity;
 
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +31,11 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     private Box box;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 }
