@@ -1,9 +1,10 @@
-import { ComponentType } from 'react';
-
+import { ComponentType } from "react";
 
 const Finance: ComponentType = () => {
   return (
-    <div>Expenses it's Working!</div>
+    <>
+      <div>Finance it's Working!</div>
+    </>
   );
 };
 
