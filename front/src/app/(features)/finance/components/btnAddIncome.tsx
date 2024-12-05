@@ -11,27 +11,33 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-const BtnAddIncome: FC = () => {
+
+interface Props {
+  isIncome: boolean;
+}
+
+const BtnAddIncome: FC<Props> = ({ isIncome }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const setOpen = () => setIsOpen(true);
   const setClose = () => setIsOpen(false);
+  const text = isIncome ? "Ingreso" : "Egreso";
+  const iconType = isIncome
+    ? "hugeicons--money-add-02"
+    : "hugeicons--money-remove-02";
   return (
     <>
       <Button onClick={setOpen}>
-        <span
-          className="icon-[hugeicons--money-add-02]"
-          role="img"
-          aria-hidden="true"
-        />
-        <span>Agregar ingreso</span>
+        <span className={`icon-[${iconType}]`} role="img" aria-hidden="true" />
+        <span>Agregar {text}</span>
       </Button>
       <Dialog open={isOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Agregar ingreso</DialogTitle>
+            <DialogTitle>Agregar {text}</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <AddIncome
+            isIncome={isIncome}
             buttons={
               <DialogFooter>
                 <DialogClose asChild>

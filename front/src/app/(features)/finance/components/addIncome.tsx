@@ -17,12 +17,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { IncomeFields } from "@/app/(core)/register/utils/formFields";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { NewIncome } from "@/lib/actions/financeActions";
+import { NewExpense, NewIncome } from "@/lib/actions/financeActions";
 interface Props {
   buttons: any;
+  isIncome: boolean;
 }
 
-const AddIncome: FC<Props> = ({ buttons }) => {
+const AddIncome: FC<Props> = ({ buttons, isIncome }) => {
   const [isLoading, setIsLoading] = useState(false);
   const incomeForm = useForm<IncomeType>({
     resolver: zodResolver(IncomeSchema),
@@ -36,9 +37,10 @@ const AddIncome: FC<Props> = ({ buttons }) => {
     formState: { errors },
     reset,
   } = incomeForm;
+  const fn = isIncome ? NewIncome : NewExpense;
   const qClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: IncomeType) => NewIncome(data),
+    mutationFn: (data: IncomeType) => fn(data),
   });
 
   const onSubmit = (data: IncomeType) => {
@@ -47,12 +49,12 @@ const AddIncome: FC<Props> = ({ buttons }) => {
     toast.promise(
       new Promise((resolve, reject) => {
         mutation.mutate(data, {
-          onSuccess: (res) => resolve(res ),
+          onSuccess: (res) => resolve(res),
           onError: (err) => reject(err),
         });
       }),
       {
-        loading: "Agregando ingreso...",
+        loading: "Agregando...",
         success: (res: any) => {
           qClient.invalidateQueries({ queryKey: ["incomes"] });
           // close();
