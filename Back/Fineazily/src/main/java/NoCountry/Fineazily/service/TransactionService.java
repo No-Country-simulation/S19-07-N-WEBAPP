@@ -12,6 +12,7 @@ import NoCountry.Fineazily.repostory.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class TransactionService extends AService<Transaction, Long> {
 
     @Override
     public void create(Transaction entity) {
+
         transactionRepository.save(entity);
     }
 
@@ -69,11 +71,45 @@ public class TransactionService extends AService<Transaction, Long> {
     public void createTransaction(TransactionDto dto, Long userId, Long boxId) {
         Transaction t = mapper.toEntity(dto);
         validateTransactionMethodType(t.getMethodType(), t.getMoveType());
+        if(t.getCreationDate() ==null){
+            t.setCreationDate(LocalDate.now());
+        }
+        //if the dto have an id it's most be deleted to autoGenerate later
+        t.setId(null);
         t.setUser(userService.findById(userId));
         t.setBox(boxService.findById(boxId));
         create(t);
     }
 
+    public void updateTransaction(TransactionDto dto){
+        Transaction t = findById(dto.id());
+        mapper.updateExistent(dto, t);
+        update(t);
+    }
+
+    //----------------------------filtered searching----------------------
+    public List<Transaction> findTransactionsByUserId(Long userId) {
+        return transactionRepository.findTransactionsByUserId(userId);
+    }
+
+    public List<Transaction> findTransactionsByBoxId(Long boxId) {
+        return transactionRepository.findTransactionsByBoxId(boxId);
+    }
+
+    public List<Transaction> findTransactionsByBranchId(Long branchId) {
+        return transactionRepository.findTransactionsByBranchId(branchId);
+    }
+
+    public List<Transaction> findTransactionsByMethodType(MethodType methodType){
+        return transactionRepository.findTransactionsByMethodType(methodType);
+    }
+
+    public List<Transaction> findTransactionsByMoveType(MoveType moveType){
+        return transactionRepository.findTransactionsByMoveType(moveType);
+    }
+    //-------------------------------------------------------------------
+
+    //-validate method for moveType according methodType
     private void validateTransactionMethodType(MethodType method, MoveType move) {
         Set<MethodType> validMethods = validMethodsByMove.get(move);
         if (validMethods == null || !validMethods.contains(method)) {
