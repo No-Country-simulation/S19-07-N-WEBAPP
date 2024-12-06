@@ -1,6 +1,8 @@
 package NoCountry.Fineazily.exception;
 
 import NoCountry.Fineazily.exception.roleExceptions.RoleNotFoundException;
+import NoCountry.Fineazily.exception.transactionExceptions.IllegalMethodTypeException;
+import NoCountry.Fineazily.exception.transactionExceptions.TransactionNotFoundException;
 import NoCountry.Fineazily.exception.userExceptions.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -97,5 +99,16 @@ public class GlobalAdviceController {
         return new ResponseEntity<>(errorResponse, errorResponse.status());
     }
 
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<?> transactionNotFoundException(TransactionNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, errorResponse.status());
+    }
+
+    @ExceptionHandler(IllegalMethodTypeException.class)
+    public ResponseEntity<?> illegalMethodTypeException(IllegalMethodTypeException ex){
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, errorResponse.status());
+    }
 
 }

@@ -14,9 +14,9 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findTransactionsByUser(User user);
+    List<Transaction> findTransactionsByUserId(Long userId);
 
-    List<Transaction> findTransactionsByBox(Box box);
+    List<Transaction> findTransactionsByBoxId(Long boxId);
 
     List<Transaction> findTransactionsByMethodType(MethodType methodType);
 
