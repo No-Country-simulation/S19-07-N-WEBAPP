@@ -4,6 +4,7 @@ import NoCountry.Fineazily.model.dto.TransactionDto;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
+import NoCountry.Fineazily.repostory.TransactionRepository;
 import NoCountry.Fineazily.service.TransactionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,10 +33,11 @@ public class TransactionController {
 
         return ResponseEntity.ok("Transaction registered");
     }
+
     //-------------------------filtered search-----------------------------------------------------------
     @GetMapping
-    public ResponseEntity<?> findAllTransactions(@RequestParam(required = false)MethodType method) {
-        if(method != null){
+    public ResponseEntity<?> findAllTransactions(@RequestParam(required = false) MethodType method) {
+        if (method != null) {
             return getResponse(transactionService.findTransactionsByMethodType(method));
         }
         return getResponse(transactionService.findAll());
@@ -59,25 +63,41 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.findById(transactionId));
     }
 
-    @GetMapping("income")
-    public ResponseEntity<?> getIncomeTransactions(){
-        return getResponse(transactionService.findTransactionsByMoveType(MoveType.INCOME));
+    //these two methods below can be replaced with one MoveType method parametrized
+    @GetMapping("moveType")
+    public ResponseEntity<?> getIncomeTransactions(@RequestParam MoveType moveType) {
+        return getResponse(transactionService.findTransactionsByMoveType(moveType));
     }
 
-    @GetMapping("egress")
-    public ResponseEntity<?> getEgressTransactions(){
-        return getResponse(transactionService.findTransactionsByMoveType(MoveType.EGRESS));
+    @GetMapping("amount/moveType")
+    public ResponseEntity<?> getTotalAmountByMoveType(@RequestParam MoveType moveType,
+                                                      @RequestParam(required = false) LocalDate since,
+                                                      @RequestParam(required = false) LocalDate until) {
+        return ResponseEntity.ok(transactionService.getAmountsSinceAndUntilDateAndByMoveType(since, until, moveType));
     }
 
-//-------------------------------------------------------------------------------------------------
+    @GetMapping("amount/methodType")
+    public ResponseEntity<?> getTotalAmountByMethodType(@RequestParam MethodType methodType,
+                                                        @RequestParam(required = false) LocalDate since,
+                                                        @RequestParam(required = false) LocalDate until) {
+        return ResponseEntity.ok(transactionService.getAmountsSinceAndUntilByMethodType(methodType, since, until));
+    }
+
+    @GetMapping("earnings")
+    public ResponseEntity<?> getEarnings(@RequestParam(required = false) LocalDate since,
+                                         @RequestParam(required = false) LocalDate until) {
+        return ResponseEntity.ok(transactionService.getTotalEarnings(since, until));
+    }
+
+    //-------------------------------------------------------------------------------------------------
     @PatchMapping
-    public ResponseEntity<?> updateTransaction(@RequestBody TransactionDto dto){
+    public ResponseEntity<?> updateTransaction(@RequestBody TransactionDto dto) {
         transactionService.updateTransaction(dto);
         return ResponseEntity.ok("transaction updated");
     }
 
     @DeleteMapping("{transactionId}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable Long transactionId){
+    public ResponseEntity<?> deleteTransaction(@PathVariable Long transactionId) {
         transactionService.delete(transactionId);
         return ResponseEntity.ok("Transaction deleted successfully");
     }

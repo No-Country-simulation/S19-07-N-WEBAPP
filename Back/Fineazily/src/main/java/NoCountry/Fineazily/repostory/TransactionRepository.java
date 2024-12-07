@@ -10,16 +10,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.List;
 
 import java.math.BigDecimal;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    //------------------------------------------------------------------------Balance and filtered balance
     @Query("select sum(t.amount) from Transaction t where t.moveType = :moveType")
-    float sumAmountsByMoveType(MoveType moveType);
+    Float sumAmountsByMoveType(MoveType moveType);
 
-    //float getTotalIncomeRangeOfDates();
+    @Query("select sum(t.amount) from Transaction t where t.moveType = :moveType and t.creationDate BETWEEN :sinceDate AND :untilDate")
+    Float sumAmountsSinceAndUntilCreationDateAndMoveType(MoveType moveType, LocalDate sinceDate, LocalDate untilDate);
 
+    @Query("select sum(t.amount) from Transaction t where t.methodType = :methodType")
+    Float sumAmountsByMethodType(MethodType methodType);
+
+    @Query("select sum(t.amount) from Transaction t where t.methodType = :methodType and t.creationDate BETWEEN :sinceDate AND :untilDate")
+    Float sumAmountsSinceAndUntilCreationDateAndMethodType(MethodType methodType, LocalDate sinceDate, LocalDate untilDate);
+
+    //-----------------------------------------------------------------------------------filtered search
     List<Transaction> findTransactionsByUserId(Long userId);
 
     List<Transaction> findTransactionsByBoxId(Long boxId);

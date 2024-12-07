@@ -107,8 +107,7 @@ public class GlobalAdviceController {
 
     @ExceptionHandler(IllegalMethodTypeException.class)
     public ResponseEntity<?> illegalMethodTypeException(IllegalMethodTypeException ex){
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(errorResponse, errorResponse.status());
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
 }
