@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,11 @@ public class UserController {
 
     @Operation(summary = "Create a new user", description = "Creates a new user using the provided UserDto")
     @PostMapping
-    public ResponseEntity<ApiResponse<UserDto>> create(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<?> create(@RequestBody @Valid UserDto userDto) {
+
+        if (service.existsByEmail(userDto.email())) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "User already exists"));
+        }
         service.create(userMapper.toEntity(userDto));
         ApiResponse<UserDto> response = new ApiResponse<>(201, "Usuario creado con éxito", userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -50,8 +55,12 @@ public class UserController {
 
     @Operation(summary = "Update user by ID", description = "Updates the information of a user using the provided ID and UserDto")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserDto>> update(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
         User existingUser = service.findById(id);
+        if(!existingUser.getEmail().equals(userDto.email()) && service.existsByEmail(userDto.email())) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("message", "User with that email already exist"));
+        }
         existingUser = userMapper.toEntity(userDto);
         existingUser.setId(id);
         service.update(existingUser);
