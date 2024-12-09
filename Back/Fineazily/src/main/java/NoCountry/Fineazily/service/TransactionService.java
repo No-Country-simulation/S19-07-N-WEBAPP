@@ -71,7 +71,7 @@ public class TransactionService extends AService<Transaction, Long> {
     public void createTransaction(TransactionDto dto, Long userId, Long boxId) {
         Transaction t = mapper.toEntity(dto);
         validateTransactionMethodType(t.getMethodType(), t.getMoveType());
-        if(t.getCreationDate() ==null){
+        if (t.getCreationDate() == null) {
             t.setCreationDate(LocalDate.now());
         }
         //if the dto have an id it's most be deleted to autoGenerate later
@@ -81,7 +81,7 @@ public class TransactionService extends AService<Transaction, Long> {
         create(t);
     }
 
-    public void updateTransaction(TransactionDto dto){
+    public void updateTransaction(TransactionDto dto) {
         Transaction t = findById(dto.id());
         mapper.updateExistent(dto, t);
         update(t);
@@ -100,13 +100,49 @@ public class TransactionService extends AService<Transaction, Long> {
         return transactionRepository.findTransactionsByBranchId(branchId);
     }
 
-    public List<Transaction> findTransactionsByMethodType(MethodType methodType){
+    public List<Transaction> findTransactionsByMethodType(MethodType methodType) {
         return transactionRepository.findTransactionsByMethodType(methodType);
     }
 
-    public List<Transaction> findTransactionsByMoveType(MoveType moveType){
+    public List<Transaction> findTransactionsByMoveType(MoveType moveType) {
         return transactionRepository.findTransactionsByMoveType(moveType);
     }
+    //--------------------------------------------Balance and filtered balance
+
+    public Float getAmountsSinceAndUntilDateAndByMoveType(LocalDate since, LocalDate until, MoveType moveType) {
+        Float result;
+        if (since != null) {
+            result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMoveType
+                    //woooooow! i didn't know that you can use Objets instead of conditional when a value is null or not
+                            (moveType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
+        }else{
+            result = transactionRepository.sumAmountsByMoveType(moveType);
+        }
+        return result != null ? result : 0.0f;
+    }
+
+    public Float getAmountsSinceAndUntilByMethodType(MethodType methodType, LocalDate since, LocalDate until) {
+        Float result;
+        if (since != null){
+            result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMethodType
+                    (methodType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
+        }else{
+            result = transactionRepository.sumAmountsByMethodType(methodType);
+        }
+        return result != null ? result : 0.0f;
+    }
+
+
+    public Float getTotalEarnings(LocalDate since, LocalDate until) {
+        if (since != null) {
+            return transactionRepository.sumAmountsSinceAndUntilCreationDateAndMoveType(MoveType.INCOME, since, Objects.requireNonNullElseGet(until, LocalDate::now)) -
+                    transactionRepository.sumAmountsSinceAndUntilCreationDateAndMoveType(MoveType.EGRESS, since, Objects.requireNonNullElseGet(until, LocalDate::now));
+        }
+        //add here a validation to show earnings of all time if dates are null
+        return transactionRepository.sumAmountsByMoveType(MoveType.INCOME) - transactionRepository.sumAmountsByMoveType(MoveType.EGRESS);
+    }
+
+
     //-------------------------------------------------------------------
 
     //-validate method for moveType according methodType
