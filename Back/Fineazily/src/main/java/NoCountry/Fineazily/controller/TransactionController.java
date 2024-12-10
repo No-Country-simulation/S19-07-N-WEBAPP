@@ -6,6 +6,11 @@ import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
 import NoCountry.Fineazily.repostory.TransactionRepository;
 import NoCountry.Fineazily.service.TransactionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +30,21 @@ import java.util.List;
 public class TransactionController {
     private final TransactionService transactionService;
 
+    @Operation(
+            summary = "Create a new transaction",
+            description = "Allows you to register a new transaction, income and egress use the same endpoint for register",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "transaction registered",
+                    content = @Content())
+                    // content = @Content(schema = @Schema(implementation = Transaction.class))),
+            },
+            parameters = {
+                    @Parameter(name = "dto", description = "a dto carrying transaction info", required = true),
+                    @Parameter(name = "userId", description = "the user id who registered the transaction", required = true),
+                    @Parameter(name = "boxId", description = "the box id where the transaction was made")
+
+            })
     @PostMapping
     public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionDto dto,
                                                @RequestParam @NotNull(message = "user id cannot be null") Long userId,
