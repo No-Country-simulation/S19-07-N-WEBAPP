@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import HeaderNavbar from "@/components/navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,7 +24,6 @@ export default function RootLayout({
       <body className={`${poppins.variable} antialiased`}>
         <div className="flex min-h-screen overflow-hidden">
           <div className="flex-1">
-            <HeaderNavbar /> {/* Navbar en la parte superior */}
             <main>{children}</main> {/* Contenido principal */}
           </div>
         </div>

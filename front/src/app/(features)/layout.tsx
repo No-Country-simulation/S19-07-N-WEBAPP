@@ -11,7 +11,9 @@ export default function FeatureLayout({
       <HeaderNavbar />
       <div className="flex">
         <Sidebar className="w-64" />
-        {children}
+        <div className="flex-grow"> {/* Asegúrate de que el contenido ocupe el espacio restante */}
+          {children}
+        </div>
       </div>
     </div>
   );
