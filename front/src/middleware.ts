@@ -2,28 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // Obtener el token de las cookies
-  const token = request.cookies.get("access_token");
-
-  // Obtener la ruta actual
-  const { pathname } = request.nextUrl;
-
-  // Rutas públicas que no requieren autenticación
-  const publicRoutes = ["/login", "/register", "/forgot-password"];
-  
-  // Verificar si es una ruta pública
-  const isPublicRoute = publicRoutes.includes(pathname);
-
-  // Si no hay token y la ruta no es pública, redirigir al login
-  if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Si hay token y la ruta es pública (login/register), redirigir al dashboard
-  if (token && isPublicRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
+  // Simplemente permite todas las rutas sin restricciones
   return NextResponse.next();
 }
 
