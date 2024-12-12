@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from 'react';
-import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from '@/services/users.service';
+import { 
+  useUsers, 
+  useCreateUser, 
+  useUpdateUser, 
+  useDeleteUser,
+  type User as ServiceUser 
+} from '@/services/users.service';
 import UserTable from "@/components/tables/users-table";
 import UserForm from "@/components/users/UserForm";
 import { Button } from "@/components/ui/button";
@@ -22,17 +28,19 @@ import {
 } from "@/components/ui/select";
 import { Plus } from 'lucide-react';
 
-interface User {
-  id: number;
+// Tipo para el formulario sin ID
+export type UserFormData = {
   name: string;
   position: string;
   branch: string;
   area: string;
   startDate: string;
-}
+};
+
+// Usar el tipo del servicio
+type User = ServiceUser;
 
 const Users = () => {
-  // Estados
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -62,16 +70,22 @@ const Users = () => {
       })
     : [];
 
-  // Handlers
-  const handleCreateUser = async (data: Omit<User, 'id'>) => {
-    await createUserMutation.mutateAsync(data);
+  // Handlers actualizados
+  const handleCreateUser = async (formData: UserFormData) => {
+    await createUserMutation.mutateAsync(formData);
     toast.success("Usuario creado correctamente");
     setIsOpen(false);
   };
 
-  const handleEditUser = async (data: User) => {
+  const handleEditUser = async (formData: UserFormData) => {
     if (!selectedUser) return;
-    await updateUserMutation.mutateAsync({ ...data, id: selectedUser.id });
+    
+    const updatedUser = {
+      ...formData,
+      id: selectedUser.id
+    };
+    
+    await updateUserMutation.mutateAsync(updatedUser);
     toast.success("Usuario actualizado correctamente");
     setIsOpen(false);
     setSelectedUser(null);
@@ -121,8 +135,8 @@ const Users = () => {
                 <SelectContent>
                   <SelectItem value="all">Todas las sucursales</SelectItem>
                   {branches.map(branch => (
-                    <SelectItem key={branch} value={branch}>
-                      {branch}
+                    <SelectItem key={branch} value={branch || ''}>
+                      {branch || 'Sin sucursal'}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -134,8 +148,8 @@ const Users = () => {
                 <SelectContent>
                   <SelectItem value="all">Todas las áreas</SelectItem>
                   {areas.map(area => (
-                    <SelectItem key={area} value={area}>
-                      {area}
+                    <SelectItem key={area} value={area || ''}>
+                      {area || 'Sin área'}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -160,7 +174,7 @@ const Users = () => {
             </div>
           ) : (
             <UserTable
-              users={filteredUsers}
+              users={filteredUsers as User[]}
               onEdit={(user) => {
                 setSelectedUser(user);
                 setIsOpen(true);
@@ -179,7 +193,17 @@ const Users = () => {
               </DialogTitle>
             </DialogHeader>
             <UserForm
-              initialData={selectedUser || undefined}
+              initialData={
+                selectedUser
+                  ? {
+                      name: selectedUser.name,
+                      position: selectedUser.position,
+                      branch: selectedUser.branch,
+                      area: selectedUser.area,
+                      startDate: selectedUser.startDate,
+                    }
+                  : undefined
+              }
               onSubmit={selectedUser ? handleEditUser : handleCreateUser}
               onCancel={handleModalClose}
               isSubmitting={createUserMutation.isPending || updateUserMutation.isPending}
