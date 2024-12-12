@@ -24,12 +24,12 @@ interface User {
 }
 
 interface UserTableProps {
-  users: User[] | undefined; // Actualizamos para permitir undefined
+  users: User[] | undefined;
   onEdit: (user: User) => void;
   onDelete: (id: number) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users = [], onEdit, onDelete }) => { // Valor por defecto vacío
+const UserTable: React.FC<UserTableProps> = ({ users = [], onEdit, onDelete }) => {
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   if (!users || users.length === 0) {
