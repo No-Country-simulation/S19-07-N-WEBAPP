@@ -114,24 +114,35 @@ export type InputProps = {
 
 // Updated error handling types and function
 interface ErrorObject extends FieldError {
-  [key: string]: ErrorObject | string | undefined;
+  message: string;
+  type: string;
 }
 
-export const getErrorMessage = (errors?: FieldErrors, name?: string): ErrorObject | undefined => {
+export const getErrorMessage = (
+  errors?: FieldErrors,
+  name?: string
+): ErrorObject | undefined => {
   if (!errors || !name) return undefined;
 
   const pathSegments = name.split(".");
-  let currentObject: Record<string, any> = errors;
+  let current: unknown = errors;
 
   for (const segment of pathSegments) {
-    if (!currentObject || typeof currentObject !== 'object') {
+    if (!current || typeof current !== 'object') {
       return undefined;
     }
-    currentObject = currentObject[segment];
+    
+    current = (current as Record<string, unknown>)[segment];
+    
+    // Si encontramos un objeto de error, lo devolvemos
+    if (current && typeof current === 'object' && 'message' in current) {
+      return current as ErrorObject;
+    }
   }
 
-  return currentObject as ErrorObject;
+  return undefined;
 };
+
 
 const InputBase = forwardRef<HTMLInputElement, InputProps>(
   (

@@ -32,7 +32,6 @@ const Places = () => {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Datos de ejemplo - reemplazar con llamada a API real
   const places = [
     {
       id: 1,
@@ -46,7 +45,6 @@ const Places = () => {
         role: "Cajero",
       },
     },
-    // ... más sucursales
   ];
 
   const handleCreatePlace = async (data: Omit<Place, 'id'>) => {
