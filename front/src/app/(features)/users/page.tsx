@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from 'react';
-import { 
-  useUsers, 
-  useCreateUser, 
-  useUpdateUser, 
+import {
+  useUsers,
+  useCreateUser,
+  useUpdateUser,
   useDeleteUser,
-  type User as ServiceUser 
+  type User as ServiceUser
 } from '@/services/users.service';
 import UserTable from "@/components/tables/users-table";
 import UserForm from "@/components/users/UserForm";
@@ -63,11 +63,11 @@ const Users = () => {
 
   const filteredUsers = Array.isArray(users)
     ? users.filter(user => {
-        const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
-        const matchesBranch = branchFilter === "all" || user.branch === branchFilter;
-        const matchesArea = areaFilter === "all" || user.area === areaFilter;
-        return matchesSearch && matchesBranch && matchesArea;
-      })
+      const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
+      const matchesBranch = branchFilter === "all" || user.branch === branchFilter;
+      const matchesArea = areaFilter === "all" || user.area === areaFilter;
+      return matchesSearch && matchesBranch && matchesArea;
+    })
     : [];
 
   // Handlers actualizados
@@ -79,12 +79,12 @@ const Users = () => {
 
   const handleEditUser = async (formData: UserFormData) => {
     if (!selectedUser) return;
-    
+
     const updatedUser = {
       ...formData,
       id: selectedUser.id
     };
-    
+
     await updateUserMutation.mutateAsync(updatedUser);
     toast.success("Usuario actualizado correctamente");
     setIsOpen(false);
@@ -174,11 +174,8 @@ const Users = () => {
             </div>
           ) : (
             <UserTable
-              users={filteredUsers as User[]}
-              onEdit={(user) => {
-                setSelectedUser(user);
-                setIsOpen(true);
-              }}
+              users={filteredUsers}
+              onEdit={setSelectedUser}
               onDelete={handleDeleteUser}
             />
           )}
@@ -196,12 +193,12 @@ const Users = () => {
               initialData={
                 selectedUser
                   ? {
-                      name: selectedUser.name,
-                      position: selectedUser.position,
-                      branch: selectedUser.branch,
-                      area: selectedUser.area,
-                      startDate: selectedUser.startDate,
-                    }
+                    name: selectedUser.name ?? "",
+                    position: selectedUser.position ?? "",
+                    branch: selectedUser.branch ?? "",
+                    area: selectedUser.area ?? "",
+                    startDate: selectedUser.startDate ?? new Date().toISOString().split('T')[0],
+                  }
                   : undefined
               }
               onSubmit={selectedUser ? handleEditUser : handleCreateUser}

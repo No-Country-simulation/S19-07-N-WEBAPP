@@ -35,6 +35,7 @@ interface UserFormProps {
   initialData?: UserFormData;
   onSubmit: (data: UserFormData) => void;
   onCancel: () => void;
+  isSubmitting?: boolean;
 }
 
 const UserForm = ({ initialData, onSubmit, onCancel }: UserFormProps) => {
