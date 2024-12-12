@@ -17,11 +17,9 @@ import { ComponentType, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { AuthFields, BasicField } from "../utils/formFields";
-import useNavigation from "@/hooks/useNavigation";
 
 const AddUser: ComponentType = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { goLogin } = useNavigation();
   const userForm = useForm<UserType>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -37,11 +35,6 @@ const AddUser: ComponentType = () => {
   const onSubmit = (data: UserType) => {
     setIsLoading(true);
     toast.promise(registerUser(data), {
-      loading: "Cargando...",
-      success: (res: any) => {
-        goLogin();
-        return res.data.message;
-      },
       error: (err) => err,
       finally: () => {
         setIsLoading(false);
