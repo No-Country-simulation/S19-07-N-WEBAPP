@@ -13,6 +13,13 @@ import {
 import PlaceForm from '@/components/places/place-form';
 import PlaceCard from '@/components/places/place-card';
 
+// Tipos base
+interface PlaceManager {
+  name: string;
+  role: string;
+  avatar?: string;
+}
+
 interface Place {
   id: number;
   name: string;
@@ -20,19 +27,25 @@ interface Place {
   employeeCount: number;
   cashierCount: number;
   departments: string[];
+  manager: PlaceManager;
+}
+
+// Tipo para el formulario
+export type PlaceFormData = {
+  name: string;
+  address: string;
   manager: {
     name: string;
     role: string;
-    avatar?: string;
   };
-}
+};
 
 const Places = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const places = [
+  const places: Place[] = [
     {
       id: 1,
       name: "Sucursal Central",
@@ -47,23 +60,50 @@ const Places = () => {
     },
   ];
 
-  const handleCreatePlace = async (data: Omit<Place, 'id'>) => {
-    // Implementar lógica de creación
-    console.log('Crear sucursal:', data);
+  const handleCreatePlace = async (formData: PlaceFormData) => {
+    // Crear un nuevo lugar con valores por defecto
+    const newPlace: Omit<Place, 'id'> = {
+      ...formData,
+      employeeCount: 0,
+      cashierCount: 0,
+      departments: [],
+      manager: {
+        ...formData.manager,
+        avatar: undefined,
+      },
+    };
+    
+    console.log('Crear sucursal:', newPlace);
     setIsOpen(false);
   };
 
-  const handleEditPlace = async (data: Place) => {
-    // Implementar lógica de edición
-    console.log('Editar sucursal:', data);
+  const handleEditPlace = async (formData: PlaceFormData) => {
+    if (!selectedPlace) return;
+
+    // Mantener los datos existentes y actualizar con los nuevos
+    const updatedPlace: Place = {
+      ...selectedPlace,
+      name: formData.name,
+      address: formData.address,
+      manager: {
+        ...selectedPlace.manager,
+        name: formData.manager.name,
+        role: formData.manager.role,
+      },
+    };
+
+    console.log('Editar sucursal:', updatedPlace);
     setIsOpen(false);
     setSelectedPlace(null);
   };
 
   const handleDeletePlace = async (id: number) => {
-    // Implementar lógica de eliminación
     console.log('Eliminar sucursal:', id);
   };
+
+  const filteredPlaces = places.filter(place =>
+    place.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -82,7 +122,7 @@ const Places = () => {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm">
             <span className="text-purple-500">sucursales</span>
-            <span className="text-xl font-semibold">{places.length}</span>
+            <span className="text-xl font-semibold">{filteredPlaces.length}</span>
             <span className="text-gray-500">Activas</span>
           </div>
 
@@ -96,7 +136,7 @@ const Places = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {places.map((place) => (
+          {filteredPlaces.map((place) => (
             <PlaceCard
               key={place.id}
               place={place}
@@ -117,7 +157,18 @@ const Places = () => {
               </DialogTitle>
             </DialogHeader>
             <PlaceForm
-              initialData={selectedPlace || undefined}
+              initialData={
+                selectedPlace
+                  ? {
+                      name: selectedPlace.name,
+                      address: selectedPlace.address,
+                      manager: {
+                        name: selectedPlace.manager.name,
+                        role: selectedPlace.manager.role,
+                      },
+                    }
+                  : undefined
+              }
               onSubmit={selectedPlace ? handleEditPlace : handleCreatePlace}
               onCancel={() => {
                 setIsOpen(false);
@@ -131,4 +182,4 @@ const Places = () => {
   );
 };
 
-export default Places;
+export default Places

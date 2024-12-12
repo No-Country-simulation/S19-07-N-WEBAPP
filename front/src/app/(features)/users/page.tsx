@@ -47,15 +47,15 @@ const Users = () => {
 
   // Memoized values
   const branches = Array.isArray(users)
-    ? Array.from(new Set(users.map(user => user.branch)))
+    ? Array.from(new Set(users.map(user => user.branch || '')))
     : [];
   const areas = Array.isArray(users)
-    ? Array.from(new Set(users.map(user => user.area)))
+    ? Array.from(new Set(users.map(user => user.area || '')))
     : [];
 
   const filteredUsers = Array.isArray(users)
     ? users.filter(user => {
-        const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
         const matchesBranch = branchFilter === "all" || user.branch === branchFilter;
         const matchesArea = areaFilter === "all" || user.area === areaFilter;
         return matchesSearch && matchesBranch && matchesArea;
@@ -77,7 +77,7 @@ const Users = () => {
     setSelectedUser(null);
   };
 
-  const handleDeleteUser = async (id: number) => {
+  const handleDeleteUser = async (id: string) => {
     await deleteUserMutation.mutateAsync(id);
     toast.success("Usuario eliminado correctamente");
   };
