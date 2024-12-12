@@ -64,34 +64,22 @@ const Users = () => {
 
   // Handlers
   const handleCreateUser = async (data: Omit<User, 'id'>) => {
-    try {
-      await createUserMutation.mutateAsync(data);
-      toast.success("Usuario creado correctamente");
-      setIsOpen(false);
-    } catch (error) {
-      toast.error("No se pudo crear el usuario");
-    }
+    await createUserMutation.mutateAsync(data);
+    toast.success("Usuario creado correctamente");
+    setIsOpen(false);
   };
 
   const handleEditUser = async (data: User) => {
     if (!selectedUser) return;
-    try {
-      await updateUserMutation.mutateAsync({ ...data, id: selectedUser.id });
-      toast.success("Usuario actualizado correctamente");
-      setIsOpen(false);
-      setSelectedUser(null);
-    } catch (error) {
-      toast.error("No se pudo actualizar el usuario");
-    }
+    await updateUserMutation.mutateAsync({ ...data, id: selectedUser.id });
+    toast.success("Usuario actualizado correctamente");
+    setIsOpen(false);
+    setSelectedUser(null);
   };
 
   const handleDeleteUser = async (id: number) => {
-    try {
-      await deleteUserMutation.mutateAsync(id);
-      toast.success("Usuario eliminado correctamente");
-    } catch (error) {
-      toast.error("No se pudo eliminar el usuario");
-    }
+    await deleteUserMutation.mutateAsync(id);
+    toast.success("Usuario eliminado correctamente");
   };
 
   const handleModalClose = () => {

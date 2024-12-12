@@ -2,7 +2,6 @@
 import type { NextPage } from "next";
 import { useState, useId, useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -23,7 +22,6 @@ const loginSchema = z.object({
 const Page: NextPage = () => {
   const id = useId();
   //const router = useRouter();
-  const { login } = useAuth();
   const queryClient = useQueryClient();
   const [isMobile, setIsMobile] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -39,8 +37,6 @@ const Page: NextPage = () => {
   }, []);
 
   const loginMutation = useMutation({
-      mutationFn: login,
-      mutationKey: [login.name],
       onSuccess: () => {
           queryClient.removeQueries();
           //router.push("/redirect");
@@ -62,12 +58,8 @@ const Page: NextPage = () => {
       },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof loginSchema>> = () => {
 
-      loginMutation.mutate({
-          username: data.user,
-          password: data.password,
-      });
   };
 
   const handleRegisterClick = () => {

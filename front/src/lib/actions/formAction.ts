@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 export const registerUser = async (userData: UserType) => {
-  const {confirmPassword, ...rest} = userData 
+  const { ...rest} = userData 
   const res = await api.post("/user", rest);
   return res;
 };
