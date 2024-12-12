@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
-interface LoadingFieldProps {
+export interface LoadingFieldProps {
   isLoading: boolean;
   field: ReactNode | string;
 }
-export const LoadingField = ({}) => {};
+

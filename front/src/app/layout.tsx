@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} antialiased`}>
         <div className="flex min-h-screen overflow-hidden">
           <div className="flex-1">
-            <main>{children}</main> {/* Contenido principal */}
+            <main>{children}</main> 
           </div>
         </div>
         <Toaster expand />
