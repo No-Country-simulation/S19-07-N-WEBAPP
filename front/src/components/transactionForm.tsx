@@ -45,12 +45,6 @@ const TransactionForm = ({ onClose }: TransactionFormProps) => {
       date,
     });
 
-    if (!result.success) {
-      // Si hay errores, actualiza el estado de errores
-      const validationErrors = result.error.format();
-      setErrors(validationErrors);
-      return;
-    }
 
     // Si la validación es exitosa, puedes manejar el envío del formulario
     console.log(result.data);
