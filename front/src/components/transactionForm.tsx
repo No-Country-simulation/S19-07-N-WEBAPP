@@ -17,8 +17,11 @@ const transactionSchema = z.object({
   cashier: z.enum(['José', 'María']),
   date: z.string().min(1, "La fecha es requerida"),
 });
+interface TransactionFormProps {
+  onClose: () => void; 
+}
 
-const TransactionForm = ({ onClose }) => {
+const TransactionForm = ({ onClose }: TransactionFormProps) => {
   const [transactionType, setTransactionType] = useState('Ingreso');
   const [method, setMethod] = useState('Efectivo');
   const [amount, setAmount] = useState('');
@@ -27,9 +30,8 @@ const TransactionForm = ({ onClose }) => {
   const [box, setBox] = useState('Caja 1');
   const [cashier, setCashier] = useState('José');
   const [date, setDate] = useState('');
-  const [errors, setErrors] = useState({}); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const result = transactionSchema.safeParse({
@@ -78,13 +80,11 @@ const TransactionForm = ({ onClose }) => {
       <Label>
         Monto
         <Input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="$10,500.00" className="mt-1" />
-        {errors.amount && <span className="text-red-500">{errors.amount._errors[0]}</span>}
       </Label>
 
       <Label>
         Título
         <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Nombre de la transacción" className="mt-1" />
-        {errors.title && <span className="text-red-500">{errors.title._errors[0]}</span>}
       </Label>
 
       <Label>
@@ -114,7 +114,7 @@ const TransactionForm = ({ onClose }) => {
       <Label>
         Fecha
         <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-1" />
-        {errors.date && <span className="text-red-500">{errors.date._errors[0]}</span>}
+
       </Label>
 
       <div className="flex justify-end mt-4">
