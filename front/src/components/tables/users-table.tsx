@@ -13,24 +13,17 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from 'react';
+import { type User as ServiceUser } from '@/services/users.service';
 
-interface User {
-  id: number;
-  name: string;
-  position: string;
-  branch: string;
-  area: string;
-  startDate: string;
-}
 
 interface UserTableProps {
-  users: User[] | undefined;
-  onEdit: (user: User) => void;
-  onDelete: (id: number) => void;
+  users: ServiceUser[] | undefined;
+  onEdit: (user: ServiceUser) => void;
+  onDelete: (id: string) => void; 
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users = [], onEdit, onDelete }) => {
-  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [userToDelete, setUserToDelete] = useState<ServiceUser | null>(null);
 
   if (!users || users.length === 0) {
     return (
@@ -103,7 +96,7 @@ const UserTable: React.FC<UserTableProps> = ({ users = [], onEdit, onDelete }) =
             <AlertDialogAction
               onClick={() => {
                 if (userToDelete) {
-                  onDelete(userToDelete.id);
+                  onDelete(userToDelete.id.toString());
                   setUserToDelete(null);
                 }
               }}
