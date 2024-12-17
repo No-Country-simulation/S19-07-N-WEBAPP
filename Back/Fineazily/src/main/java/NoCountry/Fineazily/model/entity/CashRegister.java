@@ -10,14 +10,14 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Box {
+public class CashRegister {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "cashRegister", cascade = {CascadeType.MERGE})
     private List<Transaction> transactions;
 
     @JsonIgnore

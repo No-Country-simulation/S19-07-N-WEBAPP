@@ -77,7 +77,7 @@ public class TransactionService extends AService<Transaction, Long> {
         //if the dto have an id it's most be deleted to autoGenerate later
         t.setId(null);
         t.setUser(userService.findById(userId));
-        t.setBox(boxService.findById(boxId));
+        t.setCashRegister(boxService.findById(boxId));
         create(t);
     }
 

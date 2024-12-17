@@ -33,7 +33,7 @@ public class Transaction {
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
-    private Box box;
+    private CashRegister cashRegister;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)

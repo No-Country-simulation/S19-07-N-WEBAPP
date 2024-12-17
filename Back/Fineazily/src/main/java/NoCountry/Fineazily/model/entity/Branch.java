@@ -23,7 +23,7 @@ public class Branch {
     private String address;
 
     @OneToMany(mappedBy = "branch")
-    private List<Box> boxes;
+    private List<CashRegister> cashRegisters;
 
     @OneToMany(mappedBy = "branch")
     private List<User> users;

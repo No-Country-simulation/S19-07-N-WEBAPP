@@ -1,7 +1,7 @@
 package NoCountry.Fineazily.controller;
 
 import NoCountry.Fineazily.model.dto.BoxDto;
-import NoCountry.Fineazily.model.entity.Box;
+import NoCountry.Fineazily.model.entity.CashRegister;
 import NoCountry.Fineazily.model.mapper.BoxMapper;
 import NoCountry.Fineazily.service.BoxService;
 import jakarta.validation.Valid;
@@ -37,9 +37,9 @@ public class BoxController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllBoxes() {
-        List<Box> boxes = service.findAll();
-        if (boxes != null && !boxes.isEmpty()) {
-            return ResponseEntity.ok(boxes);
+        List<CashRegister> cashRegisters = service.findAll();
+        if (cashRegisters != null && !cashRegisters.isEmpty()) {
+            return ResponseEntity.ok(cashRegisters);
         } else {
             return new ResponseEntity<>("No boxes to show", HttpStatus.NO_CONTENT);
         }

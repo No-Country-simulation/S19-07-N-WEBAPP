@@ -1,19 +1,14 @@
 package NoCountry.Fineazily.repostory;
 
-import NoCountry.Fineazily.model.entity.Box;
 import NoCountry.Fineazily.model.entity.Transaction;
-import NoCountry.Fineazily.model.entity.User;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.List;
-
-import java.math.BigDecimal;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     //------------------------------------------------------------------------Balance and filtered balance
