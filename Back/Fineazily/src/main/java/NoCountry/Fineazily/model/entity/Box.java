@@ -1,5 +1,6 @@
 package NoCountry.Fineazily.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Box {
     @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
     private List<Transaction> transactions;
 
+    @JsonIgnore
     @ManyToOne
     private Branch branch;
 }

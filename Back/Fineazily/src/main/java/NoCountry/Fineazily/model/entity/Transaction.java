@@ -1,5 +1,8 @@
 package NoCountry.Fineazily.model.entity;
 
+import NoCountry.Fineazily.model.enums.MethodType;
+import NoCountry.Fineazily.model.enums.MoveType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,13 +25,17 @@ public class Transaction {
 
     private LocalDate creationDate;
 
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
     private MethodType methodType;
 
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
+    private MoveType moveType;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Box box;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
-
 }
