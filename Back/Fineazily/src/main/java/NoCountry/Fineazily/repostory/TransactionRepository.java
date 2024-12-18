@@ -25,15 +25,17 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Float sumAmountsSinceAndUntilCreationDateAndMethodType(MethodType methodType, LocalDate sinceDate, LocalDate untilDate);
 
     //-----------------------------------------------------------------------------------filtered search
-    List<Transaction> findTransactionsByUserId(Long userId);
+    @Query("select t FROM Transaction t where t.session.employee.id = :employeeId")
+    List<Transaction> findTransactionsByEmployeeId(Long employeeId);
 
-    List<Transaction> findTransactionsByBoxId(Long boxId);
+    @Query("select t from Transaction t where t.session.cashRegister.id =  :cashRegisterId")
+    List<Transaction> findTransactionsByCashRegisterId(Long cashRegisterId);
 
     List<Transaction> findTransactionsByMethodType(MethodType methodType);
 
     List<Transaction> findTransactionsByMoveType(MoveType moveType);
 
-    @Query("SELECT t FROM Transaction t WHERE t.box.branch.id = :id")
+    @Query("SELECT t FROM Transaction t WHERE t.session.cashRegister.area.branch.id = :id")
     List<Transaction> findTransactionsByBranchId(@Param("id") Long branchId);
 
 

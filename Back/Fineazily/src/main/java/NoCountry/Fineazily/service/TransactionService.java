@@ -4,7 +4,7 @@ package NoCountry.Fineazily.service;
 import NoCountry.Fineazily.exception.transactionExceptions.IllegalMethodTypeException;
 import NoCountry.Fineazily.exception.transactionExceptions.TransactionNotFoundException;
 import NoCountry.Fineazily.model.dto.request.TransactionRequest;
-import NoCountry.Fineazily.model.entity.CashRegisterSession;
+import NoCountry.Fineazily.model.dto.response.TransactionResponse;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
@@ -38,8 +38,8 @@ public class TransactionService {
                 .orElseThrow(() -> new TransactionNotFoundException(transactionNotFound + id));
     }
 
-    public List<Transaction> findAll() {
-        return transactionRepository.findAll();
+    public List<TransactionResponse> findAll() {
+        return transactionRepository.findAll().stream().map(mapper ::toDto).toList();
     }
 
 
@@ -80,24 +80,29 @@ public class TransactionService {
     }
 
     //----------------------------filtered searching----------------------
-    public List<Transaction> findTransactionsByUserId(Long userId) {
-        return transactionRepository.findTransactionsByUserId(userId);
+    public List<TransactionResponse> findTransactionsByEmployeeId(Long userId) {
+        return transactionRepository.findTransactionsByEmployeeId(userId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByBoxId(Long boxId) {
-        return transactionRepository.findTransactionsByBoxId(boxId);
+    public List<TransactionResponse> findTransactionsByCashRegisterId(Long cashRegisterId) {
+        return transactionRepository.findTransactionsByCashRegisterId(cashRegisterId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByBranchId(Long branchId) {
-        return transactionRepository.findTransactionsByBranchId(branchId);
+    public List<TransactionResponse> findTransactionsByBranchId(Long branchId) {
+        return transactionRepository.findTransactionsByBranchId(branchId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByMethodType(MethodType methodType) {
-        return transactionRepository.findTransactionsByMethodType(methodType);
+    public List<TransactionResponse> findTransactionsByMethodType(MethodType methodType) {
+        return transactionRepository.findTransactionsByMethodType(methodType)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByMoveType(MoveType moveType) {
-        return transactionRepository.findTransactionsByMoveType(moveType);
+    public List<TransactionResponse> findTransactionsByMoveType(MoveType moveType) {
+        return transactionRepository.findTransactionsByMoveType(moveType)
+                .stream().map(mapper::toDto).toList();
     }
     //--------------------------------------------Balance and filtered balance
 
@@ -105,9 +110,9 @@ public class TransactionService {
         Float result;
         if (since != null) {
             result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMoveType
-                    //woooooow! i didn't know that you can use Objets instead of conditional when a value is null or not
+                    //wow! I didn't know that you can use Objets instead of conditional when a value is null or not
                             (moveType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
-        }else{
+        } else {
             result = transactionRepository.sumAmountsByMoveType(moveType);
         }
         return result != null ? result : 0.0f;
@@ -115,10 +120,10 @@ public class TransactionService {
 
     public Float getAmountsSinceAndUntilByMethodType(MethodType methodType, LocalDate since, LocalDate until) {
         Float result;
-        if (since != null){
+        if (since != null) {
             result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMethodType
                     (methodType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
-        }else{
+        } else {
             result = transactionRepository.sumAmountsByMethodType(methodType);
         }
         return result != null ? result : 0.0f;

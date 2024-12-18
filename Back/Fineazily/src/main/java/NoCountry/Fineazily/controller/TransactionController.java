@@ -4,6 +4,7 @@ import NoCountry.Fineazily.model.dto.request.TransactionRequest;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
+import NoCountry.Fineazily.model.mapper.TransactionMapper;
 import NoCountry.Fineazily.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +28,7 @@ import java.util.List;
 @Validated
 public class TransactionController {
     private final TransactionService transactionService;
+    private final TransactionMapper mapper;
 
     @Operation(
             summary = "Create a new transaction",
@@ -106,9 +108,9 @@ public class TransactionController {
                     @Parameter(name = "userId", description = "user id the filter transaction with it", required = true)
             }
     )
-    @GetMapping("user/{userId}")
-    public ResponseEntity<?> findTransactionsByUser(@PathVariable Long userId) {
-        return getResponse(transactionService.findTransactionsByUserId(userId));
+    @GetMapping("employee/{employeeId}")
+    public ResponseEntity<?> findTransactionsByUser(@PathVariable Long employeeId) {
+        return getResponse(transactionService.findTransactionsByEmployeeId(employeeId));
     }
 
     @Operation(
@@ -133,9 +135,9 @@ public class TransactionController {
             parameters = {
                     @Parameter(name = "boxId", description = "boxId the filter transaction with it", required = true)
             })
-    @GetMapping("box/{boxId}")
-    public ResponseEntity<?> findTransactionsByBox(@PathVariable Long boxId) {
-        return getResponse(transactionService.findTransactionsByBoxId(boxId));
+    @GetMapping("cashRegister/{cashRegisterId}")
+    public ResponseEntity<?> findTransactionsByBox(@PathVariable Long cashRegisterId) {
+        return getResponse(transactionService.findTransactionsByCashRegisterId(cashRegisterId));
     }
 
     @Operation(
@@ -183,7 +185,7 @@ public class TransactionController {
     )
     @GetMapping("{transactionId}")
     public ResponseEntity<?> findTransactionById(@PathVariable Long transactionId) {
-        return ResponseEntity.ok(transactionService.findById(transactionId));
+        return ResponseEntity.ok(mapper.toDto(transactionService.findById(transactionId)));
     }
 
     @Operation(
@@ -300,7 +302,7 @@ public class TransactionController {
     }
 
     //---------------------------------aids methods-------------------------------
-    private ResponseEntity<?> getResponse(List<Transaction> transactions) {
+    private ResponseEntity<?> getResponse(List<?> transactions) {
         if (transactions == null || transactions.isEmpty()) {
             return new ResponseEntity<>("There isn't transactions to show", HttpStatus.NO_CONTENT);
         }
