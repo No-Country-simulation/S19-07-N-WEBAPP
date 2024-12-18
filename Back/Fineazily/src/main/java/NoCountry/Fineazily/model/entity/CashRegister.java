@@ -1,10 +1,10 @@
 package NoCountry.Fineazily.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,10 +17,15 @@ public class CashRegister {
 
     private String name;
 
-    @OneToMany(mappedBy = "cashRegister", cascade = {CascadeType.MERGE})
-    private List<Transaction> transactions;
+    private boolean isActive;
 
-    @JsonIgnore
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     @ManyToOne
-    private Branch branch;
+    private Area area;
+
+    @OneToMany(mappedBy = "cashRegister")
+    private List<CashRegisterSession> sessions;
 }
