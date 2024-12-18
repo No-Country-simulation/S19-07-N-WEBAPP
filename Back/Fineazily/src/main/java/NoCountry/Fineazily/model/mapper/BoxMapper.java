@@ -1,16 +1,16 @@
 package NoCountry.Fineazily.model.mapper;
 
 import NoCountry.Fineazily.model.dto.BoxDto;
-import NoCountry.Fineazily.model.entity.Box;
+import NoCountry.Fineazily.model.entity.CashRegister;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface BoxMapper {
-    Box toEntity(BoxDto dto);
+    CashRegister toEntity(BoxDto dto);
 
-    BoxDto toDto(Box box);
+    BoxDto toDto(CashRegister cashRegister);
 
     //instead of creating a new box it will replace the new values
-    void updateExistingBox(BoxDto dto, @MappingTarget Box box);
+    void updateExistingBox(BoxDto dto, @MappingTarget CashRegister cashRegister);
 }

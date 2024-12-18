@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,11 +32,9 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private Box box;
+    @ManyToMany
+    private List<Tag> tags;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private User user;
+    @ManyToOne
+    private CashRegisterSession session;
 }

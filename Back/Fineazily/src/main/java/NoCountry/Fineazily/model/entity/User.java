@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,25 +21,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
 
     @Column(unique = true)
     private String email;
 
-    private String password;
-
-    @JsonIgnore
-    @ManyToOne
-    private Role rol;
+    private String passwordHash;
 
     private LocalDate creationDate;
 
-    @JsonIgnore
+    private LocalDateTime lastLogin;
+
+    private boolean isActive;
+
+    private boolean emailVerified;
+
     @ManyToOne
-    private Branch branch;
+    private Role role;
 
-    @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
+    @ManyToMany
+    private List<Permissions> permissions;
 
-
+    @OneToOne
+    private UserProfiles profile;
 }

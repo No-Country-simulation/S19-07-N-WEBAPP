@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,17 @@ public class Role {
 
     private String description;
 
-    @OneToMany(mappedBy = "rol")
+    private int hierarchyLevel;
+
+    private boolean status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @ManyToMany
+    private  List<Permissions> permissions;
+
+    @OneToMany(mappedBy = "role")
     private List<User> users;
 }

@@ -10,29 +10,27 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Branch {
+public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
-
     private String name;
 
-    private String phoneNumber;
+    private String description;
 
-    private String address;
+    private boolean isActive;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    private boolean isActive;
+    @ManyToOne
+    private Branch branch;
 
-    @OneToOne
-    private UserProfiles manager;
+    @OneToMany(mappedBy = "area")
+    private List<Employee> employees;
 
-    @OneToMany(mappedBy = "branch")
-    private List<Area> areas;
-
+    @OneToMany(mappedBy = "area")
+    private List<CashRegister> cashRegisters;
 }

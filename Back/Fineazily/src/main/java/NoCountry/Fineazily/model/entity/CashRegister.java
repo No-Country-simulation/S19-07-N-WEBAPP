@@ -1,26 +1,31 @@
 package NoCountry.Fineazily.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Box {
+public class CashRegister {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @OneToMany(mappedBy = "box", cascade = {CascadeType.MERGE})
-    private List<Transaction> transactions;
+    private boolean isActive;
 
-    @JsonIgnore
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     @ManyToOne
-    private Branch branch;
+    private Area area;
+
+    @OneToMany(mappedBy = "cashRegister")
+    private List<CashRegisterSession> sessions;
 }

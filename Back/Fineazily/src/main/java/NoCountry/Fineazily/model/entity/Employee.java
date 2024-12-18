@@ -4,24 +4,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Branch {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
-
-    private String name;
-
-    private String phoneNumber;
-
-    private String address;
+    private LocalDate startDate;
 
     private LocalDateTime createdAt;
 
@@ -29,10 +24,12 @@ public class Branch {
 
     private boolean isActive;
 
+    @OneToMany(mappedBy = "employee")
+    private List<CashRegisterSession> sessions;
+
+    @ManyToOne
+    private Area area;
+
     @OneToOne
-    private UserProfiles manager;
-
-    @OneToMany(mappedBy = "branch")
-    private List<Area> areas;
-
+    private UserProfiles profile;
 }
