@@ -1,6 +1,6 @@
 package NoCountry.Fineazily.controller;
 
-import NoCountry.Fineazily.model.dto.TransactionDto;
+import NoCountry.Fineazily.model.dto.request.TransactionRequest;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
@@ -43,15 +43,15 @@ public class TransactionController {
             },
             parameters = {
                     @Parameter(name = "dto", description = "a dto carrying transaction info", required = true),
-                    @Parameter(name = "userId", description = "the user id who registered the transaction", required = true),
-                    @Parameter(name = "boxId", description = "the box id where the transaction was made")
+                    @Parameter(name = "sessionId", description = "the session, this one will contain the user and the employee and the cash register associated", required = true),
+                    @Parameter(name = "tagId", description = "the tag to mark the current transaction")
 
             })
     @PostMapping
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionDto dto,
-                                               @RequestParam @NotNull(message = "user id cannot be null") Long userId,
-                                               @RequestParam @NotNull(message = "box id cannot be null") Long boxId) {
-        transactionService.createTransaction(dto, userId, boxId);
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest dto,
+                                               @RequestParam @NotNull(message = "session id cannot be null") Long sessionId,
+                                               @RequestParam @NotNull(message = "tag id cannot be null") Long tagId) {
+        transactionService.createTransaction(dto, sessionId, tagId);
 
         return ResponseEntity.ok("Transaction registered");
     }
@@ -274,11 +274,13 @@ public class TransactionController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "transaction updated", content = @Content),
                     @ApiResponse(responseCode = "404", description = "no transaction found for the given id", content = @Content)},
-            parameters = @Parameter(name = "dto", description = "a dto carrying transaction info ", required = true)
+            parameters = {
+                    @Parameter(name = "dto", description = "a dto carrying transaction info ", required = true),
+                    @Parameter(name = "id", description = "transaction id", required = true)}
     )
-    @PatchMapping
-    public ResponseEntity<?> updateTransaction(@RequestBody TransactionDto dto) {
-        transactionService.updateTransaction(dto);
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateTransaction(@RequestBody TransactionRequest dto, @PathVariable Long id) {
+        transactionService.updateTransaction(dto, id);
         return ResponseEntity.ok("transaction updated");
     }
 
