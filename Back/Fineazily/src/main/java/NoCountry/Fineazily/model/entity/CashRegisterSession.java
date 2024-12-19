@@ -19,12 +19,12 @@ public class CashRegisterSession {
 
     private LocalDateTime endDateTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Employee employee;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private CashRegister cashRegister;
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 }

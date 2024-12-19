@@ -1,4 +1,4 @@
-package NoCountry.Fineazily.exception;
+package NoCountry.Fineazily.exception.cashRegisterSessionExceptions;
 
 public class CashRegisterSessionNotFoundException extends RuntimeException {
     public CashRegisterSessionNotFoundException(String message) {

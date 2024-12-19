@@ -1,4 +1,13 @@
 package NoCountry.Fineazily.model.dto.request;
 
-public record CashRegisterSessionRequest() {
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
+
+public record CashRegisterSessionRequest(LocalDateTime startedDate,
+                                         @NotNull(message = "employee id must not be null")
+                                         Long employeeId,
+                                         @NotNull(message = "cash register id must not be null")
+                                         Long cashRegisterId) {
+
 }

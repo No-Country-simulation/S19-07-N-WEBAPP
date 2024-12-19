@@ -1,5 +1,7 @@
 package NoCountry.Fineazily.exception;
 
+import NoCountry.Fineazily.exception.cashRegisterSessionExceptions.CashRegisterSessionNotFoundException;
+import NoCountry.Fineazily.exception.cashRegisterSessionExceptions.LastSessionNotEndedException;
 import NoCountry.Fineazily.exception.roleExceptions.RoleNotFoundException;
 import NoCountry.Fineazily.exception.transactionExceptions.IllegalMethodTypeException;
 import NoCountry.Fineazily.exception.transactionExceptions.TransactionNotFoundException;
@@ -108,6 +110,16 @@ public class GlobalAdviceController {
     @ExceptionHandler(IllegalMethodTypeException.class)
     public ResponseEntity<?> illegalMethodTypeException(IllegalMethodTypeException ex){
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CashRegisterSessionNotFoundException.class)
+    public ResponseEntity<?> sessionNotFoundException(CashRegisterSessionNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(LastSessionNotEndedException.class)
+    public ResponseEntity<?> sessionAlreadyActiveException(LastSessionNotEndedException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

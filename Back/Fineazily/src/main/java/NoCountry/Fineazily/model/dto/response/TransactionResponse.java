@@ -10,12 +10,8 @@ import java.time.LocalDate;
 
 public record TransactionResponse(String title,
                                   String description,
-                                  @NotNull
-                                  @PositiveOrZero
                                   float amount,
                                   LocalDate creationDate,
-                                  @NotBlank
                                   MethodType methodType,
-                                  @NotBlank
                                   MoveType moveType) {
 }

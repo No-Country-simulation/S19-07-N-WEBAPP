@@ -3,7 +3,7 @@ package NoCountry.Fineazily.controller;
 import NoCountry.Fineazily.model.dto.BoxDto;
 import NoCountry.Fineazily.model.entity.CashRegister;
 import NoCountry.Fineazily.model.mapper.BoxMapper;
-import NoCountry.Fineazily.service.BoxService;
+import NoCountry.Fineazily.service.CashRegisterService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class BoxController {
-    private final BoxService service;
+    private final CashRegisterService service;
     private final BoxMapper mapper;
     private final String boxIdNotNullMessage = "The box id cannot be null";
 

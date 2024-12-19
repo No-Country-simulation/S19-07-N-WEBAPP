@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoxService extends AService<CashRegister, Long> {
+public class CashRegisterService extends AService<CashRegister, Long> {
     private final BoxRepository boxRepository;
     private final String notFound = "There isn't a box with that id: ";
     private final BranchService branchService;
