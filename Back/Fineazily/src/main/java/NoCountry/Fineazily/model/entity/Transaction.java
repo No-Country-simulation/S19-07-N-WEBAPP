@@ -32,9 +32,9 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private MoveType moveType;
 
-    @ManyToMany
-    private List<Tag> tags;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Tag tag;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private CashRegisterSession session;
 }
