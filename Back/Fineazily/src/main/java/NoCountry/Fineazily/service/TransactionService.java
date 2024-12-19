@@ -3,7 +3,8 @@ package NoCountry.Fineazily.service;
 
 import NoCountry.Fineazily.exception.transactionExceptions.IllegalMethodTypeException;
 import NoCountry.Fineazily.exception.transactionExceptions.TransactionNotFoundException;
-import NoCountry.Fineazily.model.dto.TransactionDto;
+import NoCountry.Fineazily.model.dto.request.TransactionRequest;
+import NoCountry.Fineazily.model.dto.response.TransactionResponse;
 import NoCountry.Fineazily.model.entity.Transaction;
 import NoCountry.Fineazily.model.enums.MethodType;
 import NoCountry.Fineazily.model.enums.MoveType;
@@ -17,13 +18,13 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
-public class TransactionService extends AService<Transaction, Long> {
+public class TransactionService {
     private final String transactionNotFound = "There isn't a transaction with that id:";
     private final TransactionRepository transactionRepository;
     private final TransactionMapper mapper;
-    private final UserService userService;
-    private final BoxService boxService;
     private static final Map<MoveType, Set<MethodType>> validMethodsByMove = new HashMap<>();
+    private final CashRegisterSessionService cashRegisterSessionService;
+    private final TagService tagService;
 
     //this block will run once when the class load in memory, makes easier and legible initialize
     //validMethods map
@@ -32,24 +33,16 @@ public class TransactionService extends AService<Transaction, Long> {
         validMethodsByMove.put(MoveType.EGRESS, EnumSet.of(MethodType.DIRECT, MethodType.FISCAL, MethodType.LOAN));
     }
 
-    @Override
-    public void create(Transaction entity) {
-
-        transactionRepository.save(entity);
-    }
-
-    @Override
     public Transaction findById(Long id) {
         return transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionNotFoundException(transactionNotFound + id));
     }
 
-    @Override
-    public List<Transaction> findAll() {
-        return transactionRepository.findAll();
+    public List<TransactionResponse> findAll() {
+        return transactionRepository.findAll().stream().map(mapper ::toDto).toList();
     }
 
-    @Override
+
     public void update(Transaction entity) {
         Long transactionId = entity.getId();
         if (transactionRepository.existsById(transactionId)) {
@@ -59,7 +52,7 @@ public class TransactionService extends AService<Transaction, Long> {
         }
     }
 
-    @Override
+
     public void delete(Long id) {
         if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);
@@ -68,44 +61,48 @@ public class TransactionService extends AService<Transaction, Long> {
         }
     }
 
-    public void createTransaction(TransactionDto dto, Long userId, Long boxId) {
+    public void createTransaction(TransactionRequest dto, Long sessionId, Long tagId) {
         Transaction t = mapper.toEntity(dto);
         validateTransactionMethodType(t.getMethodType(), t.getMoveType());
         if (t.getCreationDate() == null) {
             t.setCreationDate(LocalDate.now());
         }
-        //if the dto have an id it's most be deleted to autoGenerate later
-        t.setId(null);
-        t.setUser(userService.findById(userId));
-        t.setCashRegister(boxService.findById(boxId));
-        create(t);
+        t.setSession(cashRegisterSessionService.findById(sessionId));
+        t.setTag(tagService.findById(tagId));
+
+        transactionRepository.save(t);
     }
 
-    public void updateTransaction(TransactionDto dto) {
-        Transaction t = findById(dto.id());
+    public void updateTransaction(TransactionRequest dto, Long id) {
+        Transaction t = findById(id);
         mapper.updateExistent(dto, t);
         update(t);
     }
 
     //----------------------------filtered searching----------------------
-    public List<Transaction> findTransactionsByUserId(Long userId) {
-        return transactionRepository.findTransactionsByUserId(userId);
+    public List<TransactionResponse> findTransactionsByEmployeeId(Long userId) {
+        return transactionRepository.findTransactionsByEmployeeId(userId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByBoxId(Long boxId) {
-        return transactionRepository.findTransactionsByBoxId(boxId);
+    public List<TransactionResponse> findTransactionsByCashRegisterId(Long cashRegisterId) {
+        return transactionRepository.findTransactionsByCashRegisterId(cashRegisterId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByBranchId(Long branchId) {
-        return transactionRepository.findTransactionsByBranchId(branchId);
+    public List<TransactionResponse> findTransactionsByBranchId(Long branchId) {
+        return transactionRepository.findTransactionsByBranchId(branchId)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByMethodType(MethodType methodType) {
-        return transactionRepository.findTransactionsByMethodType(methodType);
+    public List<TransactionResponse> findTransactionsByMethodType(MethodType methodType) {
+        return transactionRepository.findTransactionsByMethodType(methodType)
+                .stream().map(mapper::toDto).toList();
     }
 
-    public List<Transaction> findTransactionsByMoveType(MoveType moveType) {
-        return transactionRepository.findTransactionsByMoveType(moveType);
+    public List<TransactionResponse> findTransactionsByMoveType(MoveType moveType) {
+        return transactionRepository.findTransactionsByMoveType(moveType)
+                .stream().map(mapper::toDto).toList();
     }
     //--------------------------------------------Balance and filtered balance
 
@@ -113,9 +110,9 @@ public class TransactionService extends AService<Transaction, Long> {
         Float result;
         if (since != null) {
             result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMoveType
-                    //woooooow! i didn't know that you can use Objets instead of conditional when a value is null or not
+                    //wow! I didn't know that you can use Objets instead of conditional when a value is null or not
                             (moveType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
-        }else{
+        } else {
             result = transactionRepository.sumAmountsByMoveType(moveType);
         }
         return result != null ? result : 0.0f;
@@ -123,10 +120,10 @@ public class TransactionService extends AService<Transaction, Long> {
 
     public Float getAmountsSinceAndUntilByMethodType(MethodType methodType, LocalDate since, LocalDate until) {
         Float result;
-        if (since != null){
+        if (since != null) {
             result = transactionRepository.sumAmountsSinceAndUntilCreationDateAndMethodType
                     (methodType, since, Objects.requireNonNullElseGet(until, LocalDate::now));
-        }else{
+        } else {
             result = transactionRepository.sumAmountsByMethodType(methodType);
         }
         return result != null ? result : 0.0f;
