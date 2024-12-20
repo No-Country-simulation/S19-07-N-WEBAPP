@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/box")
+@RequestMapping("/api/cash-register")
 @RequiredArgsConstructor
 @Validated
 public class CashRegisterController {
