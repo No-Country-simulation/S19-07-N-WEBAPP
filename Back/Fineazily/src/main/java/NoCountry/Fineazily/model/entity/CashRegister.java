@@ -23,9 +23,9 @@ public class CashRegister {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Area area;
 
-    @OneToMany(mappedBy = "cashRegister")
+    @OneToMany(mappedBy = "cashRegister", cascade = CascadeType.MERGE)
     private List<CashRegisterSession> sessions;
 }
