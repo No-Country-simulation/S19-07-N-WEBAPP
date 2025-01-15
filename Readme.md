@@ -75,7 +75,7 @@ El objetivo principal de Fineazly es proporcionar a las pequeñas y medianas emp
 | -------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | Leon Lederhos  | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 | Edgar Camberos | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/EdgarCamberos1894) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/edgar-camberos-8a66052bb) |
-| Ronald Zambrano| [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://www.linkedin.com/in/ronald-david-zambrano-salas-1757b173/)](#) |
+| Ronald Zambrano| [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/ronalRD19) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ronald-david-zambrano-salas-1757b173/) |
 | André Cáceres  | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 
 📝 *Project Manager*
